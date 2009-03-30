@@ -1,7 +1,7 @@
 package hivewars;
 
 
-//updates user variable and sends accross udp
+//updates user variable and sends across UDP
 public class Clock implements Runnable{
 
 	public Clock() {
@@ -13,7 +13,14 @@ public class Clock implements Runnable{
     }
     
     public static void createNewViewableGameState(){
+    	//check if player has added new inputs, append them if he has
     	
+    	//determine which attacking minions have reached their target, 
+    	//		modify hive status as appropriate, and remove those attacks 
+    	//		from Viewable GameState
+    	
+    	//check all hives to see if new minions need to be spawned, spawn
+    	//		as necessary
     }
     
     

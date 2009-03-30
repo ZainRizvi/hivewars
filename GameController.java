@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 public class GameController {
 	
-	static GameStateData MasterGS;
-	static GameStateData ViewableGS;
-	static GameStateData IncomingGS;
+	static GameStateController MasterGS;
+	static GameStateController ViewableGS;
+	static GameStateController IncomingGS;
 	static Attack Construction;
 	static GameStateQueue GSHistory;
 	//attacks that have not yet been put into the master game state
