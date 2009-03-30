@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 public class GameStateData implements Serializable{
     
-	ArrayList<Hive> hives;
-	ArrayList<Attack> attacks;
+	short gameStateNum;        //clock time when this state occurred
+	ArrayList<Hive> hives; 	   //all hives and their statuses
+	ArrayList<Attack> attacks; //all attacks under progress
 	
 	
 	public GameStateData() {

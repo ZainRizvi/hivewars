@@ -1,22 +1,26 @@
 package hivewars;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class GameController {
 	
-	static GameStateData Master;
-	static GameStateData Viewable;
-	static GameStateData Incoming;
+	static GameStateData MasterGS;
+	static GameStateData ViewableGS;
+	static GameStateData IncomingGS;
 	static Attack Construction;
-	static GameStateQueue History;
+	static GameStateQueue GSHistory;
+	//attacks that have not yet been put into the master game state
+	//format: {AttackTime, Attack}
+	static HashMap<Short, Attack> PlayerAttackList; 
 	
 	static boolean GameStarted = false;
 	
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
         //initialize reconcile
 		//initialize everything
+		
 		//start Gui
 		new Gui();
 		//wait for GameStarted
@@ -31,6 +35,11 @@ public class GameController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//appends new attack to PlayerAttackList
+	public static void addAttack(short time, Attack newAttack){
+		
 	}
 
 }
