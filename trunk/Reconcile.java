@@ -15,9 +15,17 @@ public class Reconcile implements Runnable{
 		}
 	}
 	
-	public GameStateData ReconcileGS(GameStateData localState, GameStateData remoteState){
+	public GameStateData ReconcileGS(){
 		GameStateData newGS = new GameStateData();
+		//merge IncomingGS and MasterGS
+		//store result in MasterGS
 		return newGS;  
 	}
-
+	
+	public GameStateData ReconcileNewMoves(GameStateData GS){
+		GameStateData newGS = new GameStateData(); 
+		//merge a game state with PlayerAttackList commands 
+		
+		return newGS;
+	}
 }
