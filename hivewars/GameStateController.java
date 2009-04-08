@@ -1,5 +1,7 @@
 package hivewars;
 
+
+
 public class GameStateController {
 	
 	private GameStateData gameState;

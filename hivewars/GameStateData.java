@@ -1,7 +1,13 @@
 package hivewars;
 
+import hivewars.GameSettings.Control;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+
+//
+//********* Being worked on by Zain ************//
+//
 
 public class GameStateData implements Serializable{
     
@@ -11,7 +17,12 @@ public class GameStateData implements Serializable{
 	
 	
 	public GameStateData() {
-		// TODO Auto-generated constructor stub
+		gameStateNum = GameSettings.initialState;
+		for(char hiveNum = 0; hiveNum < GameSettings.numHives; hiveNum++){
+			hives.add(new Hive(hiveNum, GameSettings.DefaultControler, 
+					GameSettings.defaultNumMinions, GameSettings.defaultSpawnRate, 
+					GameSettings.defaultHiveCapacity));
+		}
 	}
 	
 	//used to clone gameState

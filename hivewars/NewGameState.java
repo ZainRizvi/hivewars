@@ -12,6 +12,12 @@ public class NewGameState implements Runnable {
 
 	}
 	
+	//
+	//********* To be written by Zain ************//
+	//
+	// TODO: Figure out why there are two Reocncile functions
+	//  	 (this function and the class) and get rid of 
+	//  	 one!
 	public GameStateData Reconcile(GameStateData localState, GameStateData remoteState){
 		GameStateData newGS = new GameStateData();
 		return newGS;  
