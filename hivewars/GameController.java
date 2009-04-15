@@ -13,6 +13,8 @@ import java.util.concurrent.Semaphore;
 
 public class GameController {
 	
+	public static int lastRemoteClock = 0;
+	
 	// Game State that both players agree on
 	public static GameStateController MasterGS;	
 	// A merge of the latest GS from the other player

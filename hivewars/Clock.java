@@ -14,11 +14,16 @@ public class Clock implements Runnable{
     public void run() {
     	try {
 			createNewViewableGameState();
+			
+			if (GameController.lastRemoteClock > GameController.MasterGS.readGameState().gameStateNum){
+				GameController.MasterGS.updateGameStateNum(GameController.ViewableGS.readGameState().gameStateNum);
+			}
+			
+	    	transmitCurrentViewable();
+	    	
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	transmitCurrentViewable();
     }
     
     public static void createNewViewableGameState() throws InterruptedException{
