@@ -31,4 +31,11 @@ public class Reconcile implements Runnable{
 		
 		return newGS;
 	}
+	
+	public void updateAttacksOnHives(GameStateData gs, int tostate){
+		
+		
+
+	}
+	
 }

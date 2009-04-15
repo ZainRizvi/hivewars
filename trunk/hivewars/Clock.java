@@ -1,29 +1,29 @@
 package hivewars;
 
-
-//updates user variable and sends across UDP
+/***
+ * Name: Clock
+ * Description: Updates user variable and sends across UDP
+ * 	Spawned at 10Hz.
+ * @author josh
+ */
 public class Clock implements Runnable{
-
-	//
-	//********* To be written by Josh ************//
-	//
 	
 	public Clock() {
-		// TODO Auto-generated constructor stub
 		this.run();
 	}
     public void run() {
-    	// Create a new viewable game state
-    	
-    	
-    	
-    	
-    	
-    	//transmit game state to remote player
+    	try {
+			createNewViewableGameState();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	transmitCurrentViewable();
     }
     
-    public static void createNewViewableGameState(){
-    	//check if player has added new inputs, append them if he has
+    public static void createNewViewableGameState() throws InterruptedException{
+    	Attack currentAttack = GameController.readCurrentAttack();
+    	GameController.ViewableGS.addAttack(currentAttack);    	
     	
     	//determine which attacking minions have reached their target, 
     	//		modify hive status as appropriate, and remove those attacks 
@@ -31,6 +31,10 @@ public class Clock implements Runnable{
     	
     	//check all hives to see if new minions need to be spawned, spawn
     	//		as necessary
+    }
+    
+    public static void transmitCurrentViewable(){
+    	
     }
     
     
