@@ -9,6 +9,7 @@ import java.util.ArrayList;
 //********* Being worked on by Zain ************//
 //
 
+@SuppressWarnings("serial")
 public class GameStateData implements Serializable{
     
 	int gameStateNum;        //clock time when this state occurred

@@ -48,7 +48,7 @@ public class Receive implements Runnable{
 	//
 	// Reconciles the Master and Viewable game states with incoming game state
 	//
-	public synchronized void ReconcileGS(GameStateData newGS){
+	public synchronized void ReconcileMasterGS(GameStateData newGS){
 		int oldStateNum = GameController.MasterGS.readGameState().gameStateNum;
 		
 		//Forward old GameState to be at the same state number as new GS.
