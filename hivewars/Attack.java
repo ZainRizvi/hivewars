@@ -1,9 +1,11 @@
 package hivewars;
 
 import java.io.Serializable;
+import java.util.concurrent.Semaphore;
 
 @SuppressWarnings("serial")
 public class Attack implements Serializable{
+	private static Semaphore mutex = new Semaphore(1, true); //binary, fair
 	
 	char player;	    //player originating attack
 	char sourceHiveNum; //where attacking minion originated from
@@ -18,6 +20,10 @@ public class Attack implements Serializable{
 		this.sourceHiveNum = sourceHiveNum;
 		this.destHiveNum = destHiveNum;
 		this.firingTime = firingTime;
+	}
+	
+	public static Attack copy(Attack a){		
+		return new Attack(a.player, a.sourceHiveNum, a.destHiveNum, a.firingTime);
 	}
 	
 	public boolean equals(Attack attack){
@@ -35,5 +41,4 @@ public class Attack implements Serializable{
 		}
 		return true;	
 	}
-	
 }

@@ -7,10 +7,11 @@ public class Hive implements Serializable{
 	
 	char Base; 				//base number
 	GameSettings.Control controllingPlayer; 
-	char numMinions; 		//max 250 allowed in a hive
-
-	int spawnRate;   		//time (in 100 miliseconds) before new minion is generated  
+	char numMinions; 		//max 250 allowed in a hive	 
 	int spawnTime;			//game state time when next minion will be spawned
+
+	// Defined by Map
+	int spawnRate;   		//time (in 100 miliseconds) before new minion is generated 
 	int hiveCapacity; 		//max number of minions this hive can contain
 	
 	
