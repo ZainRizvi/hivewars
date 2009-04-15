@@ -1,5 +1,6 @@
 package hivewars;
 
+import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
@@ -23,6 +24,11 @@ public class GameController {
 	
 	public static Semaphore attackMutex = new Semaphore(1, true);
 	
+
+	//port data for talking with remote player
+	public static int remotePort;
+	public static InetAddress remoteInetAddr;
+	public static UDPSocket socket;
 	
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
