@@ -4,11 +4,21 @@ package hivewars;
 //updates user variable and sends across UDP
 public class Clock implements Runnable{
 
+	//
+	//********* To be written by Josh ************//
+	//
+	
 	public Clock() {
 		// TODO Auto-generated constructor stub
+		this.run();
 	}
     public void run() {
-    	//create a new viewable game state
+    	// Create a new viewable game state
+    	
+    	
+    	
+    	
+    	
     	//transmit game state to remote player
     }
     
