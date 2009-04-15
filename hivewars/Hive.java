@@ -17,7 +17,7 @@ public class Hive implements Serializable{
 	// Variable
 	GameSettings.Control controllingPlayer; 
 	char numMinions; 
-	int spawnTime;			//game state time when next minion will be spawned
+	int nextSpawnTime;			//game state time when next minion will be spawned
 	
 	
 	public Hive(

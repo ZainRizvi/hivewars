@@ -28,9 +28,10 @@ public class Clock implements Runnable{
     	//determine which attacking minions have reached their target, 
     	//		modify hive status as appropriate, and remove those attacks 
     	//		from Viewable GameState
+    	int currentState = GameController.ViewableGS.readGameState().gameStateNum;
+    	GameController.ViewableGS.fastForward(currentState + 1);
     	
-    	//check all hives to see if new minions need to be spawned, spawn
-    	//		as necessary
+
     }
     
     public static void transmitCurrentViewable(){
