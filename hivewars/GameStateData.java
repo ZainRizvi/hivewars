@@ -18,11 +18,7 @@ public class GameStateData implements Serializable{
 	
 	public GameStateData() {
 		gameStateNum = GameSettings.initialState;
-		for(char hiveNum = 0; hiveNum < GameSettings.numHives; hiveNum++){
-			hives.add(new Hive(hiveNum, GameSettings.DefaultControler, 
-					GameSettings.defaultNumMinions, GameSettings.defaultSpawnRate, 
-					GameSettings.defaultHiveCapacity));
-		}
+		
 	}
 	
 	//used to clone gameState
