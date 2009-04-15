@@ -17,52 +17,49 @@ public class GameStateController {
 		return new GameStateData(gameState);
 	}
 	
+	public void updateGameState(GameStateData newGameState){
+		//add mutex 
+		gameState = newGameState;
+	}
+		
 	public void addAttack(Attack attack){
 		//add mutex
-		try {
-			GSFree.acquire();} catch (InterruptedException e) {e.printStackTrace();
-		}
+		getSemaphore();
 		//add attack
 		gameState.attacks.add(attack);
-		GSFree.release();
+		releaseSemaphore();
 	}
 
 	//update game state number
 	public void updateTime(short newStateNum){
 		//add mutex
-		try {
-			GSFree.acquire();} catch (InterruptedException e) {e.printStackTrace();
-		}
+		getSemaphore();
 		//update time
 		gameState.gameStateNum = newStateNum;
-		GSFree.release();
+		releaseSemaphore();
 	}
 	
 	//removes attack from game state list
 	public void attackCompleted(Attack attack){
 		//add mutex
-		try {
-			GSFree.acquire();} catch (InterruptedException e) {e.printStackTrace();
-		}
-		//get all attacks
-		int numAttacks = gameState.attacks.size();
-		for(int i = 0; i < numAttacks; i++){
-			
-		}
+		getSemaphore();
+		//remove attack
 		gameState.attacks.remove(attack);
-		GSFree.release();
+		releaseSemaphore();
 	}
 
 	//for when hive status changes
-	public void updateHive(char hiveNum, char controllingPlayer, char numMinions){
-		//add mutex
+	//used to change the controlling player or number of minions
+	public void updateHive(char hiveNum, GameSettings.Control controllingPlayer, char numMinions){
 		
+		//add mutex
+		getSemaphore();
 		//make sure no more than hiveCapacity minions are in hive
-	}
-	
-	public void updateGameState(GameStateData newGameState){
-		//add mutex 
-		gameState = newGameState;
+		Hive hive = gameState.hives.get((int) hiveNum);
+		hive.controllingPlayer = controllingPlayer;
+		hive.numMinions = numMinions;
+		gameState.hives.set((int) hiveNum, hive);
+		releaseSemaphore();
 	}
 	
 	public void getSemaphore(){
