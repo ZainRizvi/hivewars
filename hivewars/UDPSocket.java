@@ -16,28 +16,32 @@ import java.net.UnknownHostException;
 public class UDPSocket{
 	private DatagramSocket socket;
 	protected SocketData remoteSocketData;
-	int msgSize; //message size in bytes
+	int msgSize = 10000; //max possible message size in bytes
 	
-	UDPSocket(int messageSize) throws SocketException, UnknownHostException{
-		//initialize 
-		msgSize = messageSize;		
-		socket = new DatagramSocket(); 
+	UDPSocket(){
+		//initialize 		
+		try {
+			socket = new DatagramSocket();
+		} catch (SocketException e) {e.printStackTrace();} 
 	}
 	
-	UDPSocket(int messageSize, int port) throws SocketException, UnknownHostException{
+	UDPSocket(int port) throws SocketException, UnknownHostException{
 		//initialize 
-		msgSize = messageSize;		
 		socket = new DatagramSocket(port); 
 	}
 	
-	public void sendMessage(Object message, InetAddress srvIP, int srvPort) throws IOException {
+	public void sendMessage(Object message, InetAddress srvIP, int srvPort){
 		ByteArrayOutputStream b_out = new ByteArrayOutputStream();
-		ObjectOutputStream o_out = new ObjectOutputStream(b_out);
-		
-		o_out.writeObject(message);
+		ObjectOutputStream o_out;
+		try {
+			o_out = new ObjectOutputStream(b_out);
+			o_out.writeObject(message);
+		} catch (IOException e) {e.printStackTrace();}
 		byte[] sStream = b_out.toByteArray();
 		DatagramPacket sPacket = new DatagramPacket(sStream, sStream.length, srvIP, srvPort);
-		socket.send(sPacket);
+		try {
+			socket.send(sPacket);
+		} catch (IOException e) {e.printStackTrace();}
 	}
 	
 	public Object getMessage(){
@@ -65,6 +69,10 @@ public class UDPSocket{
 	
 	public int getLocalPort(){
 		return socket.getLocalPort();
+	}
+	
+	public InetAddress getLocalAddress(){
+		return socket.getLocalAddress();
 	}
 	
 	public void close(){

@@ -1,6 +1,6 @@
 package hivewars;
 
-public class Reconcile implements Runnable{
+public class Reconcile{
 
 	//
 	//********* To be written by Zain ************//
@@ -9,33 +9,31 @@ public class Reconcile implements Runnable{
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	public void run() {
-		while(true){
-			//put thread to sleep using semaphores
-			//when Receive wakes up thread...
-			//reconcile master state with remote state
-		}
-	}
+//	@Override
+//	public void run() {
+//		while(true){
+//			//put thread to sleep using semaphores
+//			//when Receive wakes up thread...
+//			//reconcile master state with remote state
+//		}
+//	}
 	
-	public GameStateData ReconcileGS(){
-		GameStateData newGS = new GameStateData();
-		//merge IncomingGS and MasterGS
+	// Adds new attacks in newGS to attack list in oldGS
+	public static GameStateData ReconcileGS(GameStateController oldGS, GameStateData newGS){
+		//forward oldGS to be at the same state number as new GS
+		
 		//store result in MasterGS
 		return newGS;  
 	}
 	
-	public GameStateData ReconcileNewMoves(GameStateData GS){
+	public static GameStateData ReconcileNewMoves(GameStateData GS){
 		GameStateData newGS = new GameStateData(); 
 		//merge a game state with PlayerAttackList commands 
 		
 		return newGS;
 	}
 	
-	public void updateAttacksOnHives(GameStateData gs, int tostate){
-		
-		
+	public static void updateAttacksOnHives(GameStateData gs, int tostate){
 
-	}
-	
+	}	
 }
