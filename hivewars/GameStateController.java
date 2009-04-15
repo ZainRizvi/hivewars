@@ -19,34 +19,23 @@ public class GameStateController {
 	}
 	
 	public synchronized void updateGameState(GameStateData newGameState){
-		//add mutex 
 		gameState = newGameState;
 	}
 		
 	public synchronized void addAttack(Attack attack){
-		//add mutex
-		//add attack
 		gameState.attacks.add(attack);
-	}
-
-	//update game state number
-	public synchronized void updateTime(short newStateNum){
-		//add mutex
-		//update time
-		gameState.gameStateNum = newStateNum;
 	}
 	
 	//removes attack from game state list
 	public synchronized void attackCompleted(Attack attack){
-		//add mutex
-		//remove attack
 		gameState.attacks.remove(attack);
 	}
 
 	//for when hive status changes
 	//used to change the controlling player or number of minions
-	public synchronized void updateHive(char hiveNum, GameSettings.Control controllingPlayer, char numMinions){
-		//add mutex
+	public synchronized void updateHive(char hiveNum, 
+			GameSettings.Control controllingPlayer, 
+			char numMinions){
 		//make sure no more than hiveCapacity minions are in hive
 		Hive hive = gameState.hives.get((int) hiveNum);
 		hive.controllingPlayer = controllingPlayer;
@@ -69,11 +58,6 @@ public class GameStateController {
 			}
 		}		
 	}
-	
-	public synchronized void ReconcileNewMoves(GameStateData GS){
-		GameStateData newGS = new GameStateData(); 
-		//merge a game state with PlayerAttackList commands 
-	}	
 	
 	public synchronized void fastForward(int finalStateNum){
 		// Assumes that the gameState's gameStateNum has not been advanced
@@ -103,15 +87,25 @@ public class GameStateController {
 				Attack attack = attacks.get(i);
 				
 				if (attack.hitTime == gameState.gameStateNum){
-					hives.get(attack.destHiveNum).numMinions--;
+					Hive hive = hives.get(attack.destHiveNum);
+					if (attack.player == hive.controllingPlayer){
+						hive.numMinions++;
+					}else if(hive.controllingPlayer == GameSettings.Control.Neutral){
+						hive.numMinions--;
+						if (hive.numMinions == -1){
+							hive.controllingPlayer = attack.player;
+							hive.numMinions = 1;
+						}
+					}else{ // The other player owns the hive
+						hive.numMinions--;
+						if(hive.numMinions == 0){
+							hive.controllingPlayer = GameSettings.Control.Neutral;
+						}
+					}
 					attacks.remove(i);
 				}				
 			}			
 		}		
-	}
-	
-	public synchronized void incrementCounter(){
-		gameState.gameStateNum++;
 	}
 
 }
