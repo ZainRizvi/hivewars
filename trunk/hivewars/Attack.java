@@ -18,6 +18,22 @@ public class Attack implements Serializable{
 		this.sourceHiveNum = sourceHiveNum;
 		this.destHiveNum = destHiveNum;
 		this.firingTime = firingTime;
-	}	
+	}
+	
+	public boolean equals(Attack attack){
+		if(player != attack.player){
+			return false;
+		}
+		if(sourceHiveNum != attack.sourceHiveNum){
+			return false;
+		}
+		if(destHiveNum != attack.destHiveNum){
+			return false;
+		}
+		if(firingTime != attack.firingTime){
+			return false;
+		}
+		return true;	
+	}
 	
 }
