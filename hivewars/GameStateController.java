@@ -78,6 +78,11 @@ public class GameStateController {
 		}		
 	}
 	
+	public void ReconcileNewMoves(GameStateData GS){
+		GameStateData newGS = new GameStateData(); 
+		//merge a game state with PlayerAttackList commands 
+	}	
+	
 	public void fastForward(int stateNum){
 		
 	}
