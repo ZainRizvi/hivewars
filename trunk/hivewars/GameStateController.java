@@ -62,6 +62,26 @@ public class GameStateController {
 		releaseSemaphore();
 	}
 	
+	public void ReconcileGS(GameStateData newGS){
+		int oldStateNum = gameState.gameStateNum;
+		
+		//forward old GameState to be at the same state number as new GS
+		fastForward(newGS.gameStateNum);
+			
+		//add all new attacks from the newGS into the current Game State
+		int numAttacks = newGS.attacks.size();
+		for(int i = 0; i < numAttacks; i++){
+			Attack attack = newGS.attacks.get(i);
+			if(attack.firingTime > oldStateNum){
+				gameState.attacks.add(attack);
+			}
+		}		
+	}
+	
+	public void fastForward(int stateNum){
+		
+	}
+	
 	public void getSemaphore(){
 		try {
 			GSFree.acquire();
