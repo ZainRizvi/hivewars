@@ -43,4 +43,26 @@ public class Receive implements Runnable{
 			GameController.MasterGS.ReconcileGS(incomingGS);			
 		}		
 	}
+	
+
+	//
+	// Reconciles the Master and Viewable game states with incoming game state
+	//
+	public synchronized void ReconcileGS(GameStateData newGS){
+		int oldStateNum = GameController.MasterGS.readGameState().gameStateNum;
+		
+		//Forward old GameState to be at the same state number as new GS.
+		//Viewable is already at or ahead of MasterGS
+		GameController.MasterGS.fastForward(newGS.gameStateNum);
+			
+		//add all new attacks from the newGS into master and viewable game states
+		int numAttacks = newGS.attacks.size();
+		for(int i = 0; i < numAttacks; i++){
+			Attack attack = newGS.attacks.get(i);
+			if(attack.firingTime > oldStateNum){
+				GameController.MasterGS.addAttack(attack);
+				GameController.ViewableGS.addAttack(attack);
+			}
+		}		
+	}	
 }
