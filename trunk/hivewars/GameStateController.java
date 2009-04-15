@@ -21,6 +21,10 @@ public class GameStateController {
 	public synchronized void updateGameState(GameStateData newGameState){
 		gameState = newGameState;
 	}
+	
+	public synchronized void updateGameStateNum(int newGameStateNum){
+		gameState.gameStateNum = newGameStateNum;
+	}
 		
 	public synchronized void addAttack(Attack attack){
 		gameState.attacks.add(attack);
@@ -106,6 +110,10 @@ public class GameStateController {
 				}				
 			}			
 		}		
+	}
+	
+	public static void main (String[] args){
+		GameStateController gs = new GameStateController();
 	}
 
 }
