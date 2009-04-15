@@ -115,17 +115,12 @@ public class GameStateController {
 	public void getSemaphore(){
 	  try {
 	          GSFree.acquire();
-	  } catch (InterruptedException e) {
-	          // TODO Auto-generated catch block
-	          e.printStackTrace();
-	  }
+	  } catch (InterruptedException e) {e.printStackTrace();}
 	}
 	
 	public void releaseSemaphore(){
 	  GSFree.release();
-	}
-	
-	
+	}	
 	
 	public static void main (String[] args){
 		GameStateController gs = new GameStateController();
