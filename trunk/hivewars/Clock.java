@@ -15,9 +15,11 @@ public class Clock implements Runnable{
     	try {
 			createNewViewableGameState();
 			
+			GameController.MasterGS.getSemaphore();
 			if (GameController.lastRemoteClock > GameController.MasterGS.readGameState().gameStateNum){
-				GameController.MasterGS.updateGameStateNum(GameController.ViewableGS.readGameState().gameStateNum);
+				GameController.MasterGS.fastForward(GameController.ViewableGS.readGameState().gameStateNum);
 			}
+			GameController.MasterGS.releaseSemaphore();
 			
 	    	transmitCurrentViewable();
 	    	
@@ -28,6 +30,9 @@ public class Clock implements Runnable{
     
     public static void createNewViewableGameState() throws InterruptedException{
     	Attack currentAttack = GameController.readCurrentAttack();
+    	
+    	GameController.ViewableGS.getSemaphore();
+    	
     	GameController.ViewableGS.addAttack(currentAttack);    	
     	
     	//determine which attacking minions have reached their target, 
@@ -36,7 +41,7 @@ public class Clock implements Runnable{
     	int currentState = GameController.ViewableGS.readGameState().gameStateNum;
     	GameController.ViewableGS.fastForward(currentState + 1);
     	
-
+    	GameController.ViewableGS.releaseSemaphore();
     }
     
     public static void transmitCurrentViewable(){
