@@ -1,5 +1,6 @@
 package hivewars;
 
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 
@@ -74,21 +75,43 @@ public class GameStateController {
 		//merge a game state with PlayerAttackList commands 
 	}	
 	
-	public synchronized void fastForward(int stateNum){
+	public synchronized void fastForward(int finalStateNum){
+		// Assumes that the gameState's gameStateNum has not been advanced
 		
+		if (gameState.gameStateNum >= finalStateNum){
+			System.out.println("WTF?");
+			return;
+		}
+		
+		while (gameState.gameStateNum < finalStateNum){			
+			gameState.gameStateNum++;
+			
+			// Spawn Minions
+			ArrayList<Hive> hives = gameState.hives;
+			for (int i = 0; i < hives.size(); i ++){
+				Hive hive = hives.get(i);				
+				hive.nextSpawnTime--;
+				if (hive.nextSpawnTime == 0){
+					hive.nextSpawnTime = hive.spawnRate;					
+					hive.numMinions++;					
+				}				
+			}			
+			
+			// Check for collisions
+			ArrayList<Attack> attacks = gameState.attacks;
+			for (int i = 0; i < attacks.size(); i ++){
+				Attack attack = attacks.get(i);
+				
+				if (attack.hitTime == gameState.gameStateNum){
+					hives.get(attack.destHiveNum).numMinions--;
+					attacks.remove(i);
+				}				
+			}			
+		}		
 	}
 	
-//	public void getSemaphore(){
-//		try {
-//			GSFree.acquire();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	public void releaseSemaphore(){
-//		GSFree.release();
-//	}
+	public synchronized void incrementCounter(){
+		gameState.gameStateNum++;
+	}
 
 }
