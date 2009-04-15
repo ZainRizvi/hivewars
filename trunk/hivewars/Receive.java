@@ -23,7 +23,7 @@ public class Receive implements Runnable{
 		//get incoming game state
 		GameStateData incomingGS = (GameStateData) socket.getMessage();
 		//store game state
-		Reconcile.ReconcileGS(GameController.MasterGS, incomingGS);
+		GameController.MasterGS.ReconcileGS(incomingGS);
 		//wake up Reconcile
 	}
 	
