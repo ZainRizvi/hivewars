@@ -13,7 +13,7 @@ public class Gui extends Thread {
 
 	public void run() {
         GameLoader game = new GameLoader();
-        game.setup(new GoldenT(), new Dimension(800,600), true);
+        game.setup(new GoldenT(), new Dimension(800,600), false);
         //start:
         //		initResouces()
         //		while(true){
