@@ -1,6 +1,7 @@
 package hivewars;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
@@ -38,6 +39,15 @@ public class GameController {
 	public static void main(String[] args) {
         //initialize reconcile
 		//initialize everything
+		ViewableGS = new GameStateController();
+		new Map();
+		GameStateData initialGameState = new GameStateData();
+		initialGameState.hives = Map.hives;
+		initialGameState.attacks = new ArrayList<Attack>();
+		ViewableGS.updateGameState(initialGameState);
+		CurrentAttack = new Attack(GameSettings.Control.Neutral, (char) 0, (char) 0, (short) 0);
+		MasterGS = new GameStateController();
+		MasterGS.updateGameState(ViewableGS.readGameState());
 		
 		//start Gui
 		new Gui();
