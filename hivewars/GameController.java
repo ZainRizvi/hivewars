@@ -1,5 +1,7 @@
 package hivewars;
 
+import hivewars.GameSettings.Control;
+
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -39,6 +41,9 @@ public class GameController {
 	
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
+	
+	//who am I: PlayerA, PlayerB, Neutral
+	static Control Me = Control.Neutral;
 	
 	public static void main(String[] args) {
         //initialize reconcile
