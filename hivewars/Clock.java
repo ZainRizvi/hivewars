@@ -46,7 +46,7 @@ public class Clock implements Runnable{
     
     public static void transmitCurrentViewable(){
     	GameController.socket.sendMessage(
-    			GameController.ViewableGS, 
+    			GameController.ViewableGS.readGameState(), 
     			GameController.remoteInetAddr, 
     			GameController.remotePort);
     }

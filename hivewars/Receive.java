@@ -7,7 +7,7 @@ public class Receive implements Runnable{
 	InetAddress localInetAddr;
 	
 	public Receive() {
-		//socket = new UDPSocket();
+		GameController.socket = new UDPSocket();
 		localPort = GameController.socket.getLocalPort();
 		localInetAddr = GameController.socket.getLocalAddress();
 		

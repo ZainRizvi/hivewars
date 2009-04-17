@@ -16,6 +16,9 @@ interface GameSettings {
 		PlayerA, PlayerB, Neutral
 	}
 	
+	//who am I
+	static Control Me = Control.Neutral;
+	
 	// Default values for hives
 	static final Control DefaultControler = GameSettings.Control.Neutral;
 	static final char defaultNumMinions = 10;

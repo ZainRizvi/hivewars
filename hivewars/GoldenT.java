@@ -36,6 +36,8 @@ public class GoldenT extends Game {
 	Background bg;
 	Color c;
 	ArrayList<MinionNumber> minionNumbers;
+	int click;
+	int selectedHive, sourceHive, destHive;
 	//sprites
 	ArrayList<AnimatedSprite> hives, attacks;
 	SpriteGroup Hives, Attacks;
@@ -124,6 +126,7 @@ public class GoldenT extends Game {
     	
     	//start game
     	GameController.GameStarted = true;
+    	click = 0;
     }
 	
 	
@@ -131,13 +134,14 @@ public class GoldenT extends Game {
 	//inputs: current x and y, destination x and y, and velocity
 	//output: an array of doubles {x velocity, y velocity}
 	public int[] getSpeedTo(int xOld, int yOld ,int xNew, int yNew){
-		int hyp, xv, yv, xdist, ydist;
+		double hyp;
+		int xv, yv, xdist, ydist;
 		int ret[] = {0, 0};
 		xdist = xNew - xOld;
 		ydist = yNew - yOld;
-		hyp = (int) Math.sqrt(xdist*xdist + ydist*ydist);
-		xv = (xdist / hyp) * ATTACK_SPEED;
-		yv = (ydist / hyp) * ATTACK_SPEED;
+		hyp =  Math.sqrt(xdist*xdist + ydist*ydist);
+		xv = (int) ((xdist / hyp) * ATTACK_SPEED);
+		yv = (int) ((ydist / hyp) * ATTACK_SPEED);
 		ret[0] = xv;
 		ret[1] = yv;
 		return ret;
@@ -192,10 +196,32 @@ public class GoldenT extends Game {
     		(currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[1];
     		attacks.get(k).forceX(x);
     		attacks.get(k).forceY(y);
+    		//*set animations*
     	}
     	
     	//check for mouse event
+    	if(bsInput.isMouseDown(MouseEvent.BUTTON1)) {
+    		int xm = getMouseX();
+    		int ym = getMouseY();
+    		for(int k = 0; k < hives.size(); k ++){	
+				if(xm >= hives.get(k).getX() && xm <= hives.get(k).getX() + hives.get(k).getWidth() &&
+    			   ym >= hives.get(k).getY() && ym <= hives.get(k).getY() + hives.get(k).getHeight()){
+					selectedHive = k;
+					click = 1;
+    			}
+    		}  	
+    		
+    		//if (click == 2){
+    			//xySpeed = getSpeedTo(sprites[selected].getX(), sprites[selected].getY(), xm, ym, 0.1);
+    			//sprites[selected].setSpeed(xySpeed[0], xySpeed[1]);
+    		//}
+    	}
     	
+    	if(!bsInput.isMouseDown(MouseEvent.BUTTON1)){
+    		if(click == 1){
+    			click = 2;
+    		}
+    	}
     	//tell sprites which way to face when they are walking
 
     	//check collisons, boundary and sprite to sprite
