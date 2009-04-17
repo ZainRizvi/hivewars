@@ -19,7 +19,6 @@ public class GameStateData implements Serializable{
 	
 	public GameStateData() {
 		gameStateNum = GameSettings.initialState;
-		
 	}
 	
 	//used to clone gameState

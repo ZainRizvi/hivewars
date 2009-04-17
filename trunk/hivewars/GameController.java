@@ -1,6 +1,8 @@
 package hivewars;
 
 import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
@@ -33,6 +35,8 @@ public class GameController {
 	public static InetAddress remoteInetAddr;
 	public static UDPSocket socket;
 	
+	public static UDPSocket TestSocket; 
+	
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
 	
@@ -48,6 +52,16 @@ public class GameController {
 		CurrentAttack = new Attack(GameSettings.Control.Neutral, (char) 0, (char) 0, (short) 0);
 		MasterGS = new GameStateController();
 		MasterGS.updateGameState(ViewableGS.readGameState());
+		new Receive();
+		remotePort = 50000;
+		try {
+			remoteInetAddr = InetAddress.getLocalHost();
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		//TestSocket= new UDPSocket(50000);
 		
 		//start Gui
 		new Gui();
