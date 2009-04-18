@@ -6,6 +6,8 @@ import com.golden.gamedev.GameLoader;
 //this class simply starts the Gui thread
 public class Gui extends Thread {
 	
+	static GoldenT gui;
+	
 	//constructor
 	public Gui() {
 		start();
@@ -13,7 +15,8 @@ public class Gui extends Thread {
 
 	public void run() {
         GameLoader game = new GameLoader();
-        game.setup(new GoldenT(), new Dimension(800,600), false);
+        gui = new GoldenT();
+        game.setup(gui, new Dimension(800,600), false);
         //start:
         //		initResouces()
         //		while(true){

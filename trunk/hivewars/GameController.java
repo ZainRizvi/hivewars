@@ -54,7 +54,7 @@ public class GameController implements GameSettings{
 		initialGameState.hives = Map.hives;
 		initialGameState.attacks = new ArrayList<Attack>();
 		ViewableGS.updateGameState(initialGameState);
-		CurrentAttack = new Attack(GameSettings.Control.Neutral, (char) 0, (char) 0, (short) 0);
+		CurrentAttack = null;
 		MasterGS = new GameStateController();
 		MasterGS.updateGameState(ViewableGS.readGameState());
 		
@@ -98,6 +98,21 @@ public class GameController implements GameSettings{
 	
 	//appends new attack to PlayerAttackList
 	public static void writeCurrentAttack(Attack newAttack) throws InterruptedException{
+		if(newAttack != null){
+			double hyp;
+			int xv, xdist, ydist;
+			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x;
+			int destX = Map.hives.get(newAttack.destHiveNum).x;
+			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y;
+			int destY = Map.hives.get(newAttack.destHiveNum).y;
+			//calculate hitTime
+			xdist = destX - sourceX;
+			ydist = destY - sourceY;
+			hyp =  Math.sqrt(xdist*xdist + ydist*ydist);
+			xv = (int) ((xdist / hyp) * GameSettings.ATTACK_SPEED);
+			newAttack.hitTime = (short) (newAttack.firingTime + xdist / xv);
+			System.out.println("hitTime: " + newAttack.hitTime);
+		}
 		attackMutex.acquire();
 		CurrentAttack = newAttack;
 		attackMutex.release();

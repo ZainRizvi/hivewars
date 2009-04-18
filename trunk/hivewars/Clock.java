@@ -35,7 +35,10 @@ public class Clock implements Runnable{
     	
     	GameController.ViewableGS.getSemaphore();
     	
-    	GameController.ViewableGS.addAttack(currentAttack);    	
+    	if(currentAttack != null){
+    		GameController.ViewableGS.addAttack(currentAttack);   
+    		GameController.writeCurrentAttack(null);
+    	}
     	
     	//determine which attacking minions have reached their target, 
     	//		modify hive status as appropriate, and remove those attacks 
