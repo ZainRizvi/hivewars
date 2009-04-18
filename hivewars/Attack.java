@@ -21,7 +21,11 @@ public class Attack implements Serializable{
 	}
 	
 	public static Attack copy(Attack a){		
-		return new Attack(a.player, a.sourceHiveNum, a.destHiveNum, a.firingTime);
+		if(a != null){
+			return new Attack(a.player, a.sourceHiveNum, a.destHiveNum, a.firingTime);
+		} else {
+			return null;
+		}
 	}
 	
 	public boolean equals(Attack attack){

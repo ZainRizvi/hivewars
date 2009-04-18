@@ -31,7 +31,9 @@ public class Hive implements Serializable{
 		
 		this.Base = id;
 		this.startingPlayer = startingPlayer;
+		this.controllingPlayer = startingPlayer;
 		this.startingMinions = startingMinions;
+		this.numMinions = (char) startingMinions;
 		this.spawnRate = spawnRate;
 		this.hiveCapacity = maxSize;
 		this.x = x;
