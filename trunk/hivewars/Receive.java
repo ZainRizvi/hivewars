@@ -27,6 +27,7 @@ public class Receive implements Runnable{
 	public void receiveGameStates(){
 		//get incoming game state
 		GameStateData incomingGS = (GameStateData) GameController.socket.getMessage();
+		GameController.GameStarted = true;		
 		
 		//store remote socket's and IP address information
 		GameController.remotePort = GameController.socket.remoteSocketData.port;			
