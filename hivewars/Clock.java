@@ -15,6 +15,8 @@ public class Clock implements Runnable{
     	try {
 			createNewViewableGameState();
 			
+			//  Update Master Game State to either the remote game state or viewable game state,
+			//    whichever is lower
 			GameController.MasterGS.getSemaphore();
 			if (GameController.lastRemoteClock > GameController.MasterGS.readGameState().gameStateNum){
 				GameController.MasterGS.fastForward(GameController.ViewableGS.readGameState().gameStateNum);

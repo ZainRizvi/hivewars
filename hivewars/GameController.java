@@ -16,7 +16,7 @@ import java.util.concurrent.Semaphore;
  * @author josh
  */
 
-public class GameController {
+public class GameController implements GameSettings{
 	
 	public static int lastRemoteClock = 0;
 	
@@ -33,8 +33,8 @@ public class GameController {
 	
 
 	//port data for talking with remote player
-	public static int remotePort;
-	public static InetAddress remoteInetAddr;
+	public static int remotePort = 0;
+	public static InetAddress remoteInetAddr = null;
 	public static UDPSocket socket;
 	
 	public static UDPSocket TestSocket; 
@@ -57,8 +57,12 @@ public class GameController {
 		CurrentAttack = new Attack(GameSettings.Control.Neutral, (char) 0, (char) 0, (short) 0);
 		MasterGS = new GameStateController();
 		MasterGS.updateGameState(ViewableGS.readGameState());
+		
+		// Initialize game state receiver thread.  Game starts for player A when 
+		//   he receives the first communication.
 		new Receive();
-		remotePort = 50000;
+		
+		//remotePort = 50000;
 		try {
 			remoteInetAddr = InetAddress.getLocalHost();
 		} catch (UnknownHostException e1) {
@@ -66,23 +70,26 @@ public class GameController {
 			e1.printStackTrace();
 		}
 		
-		//TestSocket= new UDPSocket(50000);
-		
 		//start Gui
 		new Gui();
 		
-		// Wait for game to start
+		while(Me == Control.Neutral){}; //player hasn't chosen to host or join yet
+		if(Me == Control.PlayerB){
+			// Start playing. when player A will start when he receives player B's first state  
+			GameStarted = true; 
+		}
+		
+		// Player A wait for Player B to send him a game state.  
+		//    Allows him to learn B's inet and port address
 		while (!GameStarted);
 		
 		while(!GameFinished){
-			//call clock every 10hz
+			//call clock every 100ms
 			new Clock();
 			Thread.currentThread();
 			try {
 				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			} catch (InterruptedException e) {e.printStackTrace();}
 		}
 		
 		// Clean up?
