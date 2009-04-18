@@ -25,9 +25,11 @@ public class UDPSocket{
 		} catch (SocketException e) {e.printStackTrace();} 
 	}
 	
-	UDPSocket(int port) throws SocketException, UnknownHostException{
+	UDPSocket(int port){
 		//initialize 
-		socket = new DatagramSocket(port); 
+		try {
+			socket = new DatagramSocket(port);
+		} catch (SocketException e) {e.printStackTrace();} 
 	}
 	
 	public void sendMessage(Object message, InetAddress srvIP, int srvPort){
