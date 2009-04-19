@@ -1,6 +1,7 @@
 package hivewars;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class Receive implements Runnable{
 	int localPort;
@@ -9,7 +10,14 @@ public class Receive implements Runnable{
 	public Receive() {
 		GameController.socket = new UDPSocket();
 		localPort = GameController.socket.getLocalPort();
-		localInetAddr = GameController.socket.getLocalAddress();
+		try {
+			localInetAddr = InetAddress.getByName(InetAddress.getLocalHost().getHostName());
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		GameController.localInetAddr = localInetAddr;
+		GameController.localPort = localPort;
 		
 		Thread t = new Thread(this);
 		t.start();

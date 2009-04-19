@@ -36,6 +36,8 @@ public class GameController implements GameSettings{
 	public static int remotePort = 0;
 	public static InetAddress remoteInetAddr = null;
 	public static UDPSocket socket;
+	public static int localPort;
+	public static InetAddress localInetAddr;
 	
 	public static UDPSocket TestSocket; 
 	

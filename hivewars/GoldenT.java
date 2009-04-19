@@ -44,7 +44,7 @@ public class GoldenT extends Game {
 	ArrayList<MinionNumber> minionNumbers;
 	int click;
 	int selectedHive, sourceHive, destHive;
-	char mode;
+	int mode;
 	//sprites
 	ArrayList<AnimatedSprite> hives, attacks;
 	SpriteGroup Hives, Attacks;
@@ -54,7 +54,7 @@ public class GoldenT extends Game {
 	//GUI variables
 	FrameWork frame;
 	TTextField ipField, portField;
-	TButton waitButton, connectToButton, connectButton;
+	TButton waitButton, connectToButton, connectButton, cancelWaitButton, cancelConnectButton;
 	char userError;
 	
 	
@@ -109,7 +109,6 @@ public class GoldenT extends Game {
 		waitButton = new TButton("Wait for opponent", 150, 200, 200, 50) {
 			public void doAction() {
 				mode = 1;
-				GameController.Me = GameSettings.Control.PlayerA;
 			}
 		};
 		frame.add(waitButton);
@@ -119,7 +118,7 @@ public class GoldenT extends Game {
 			}
 		};
 		frame.add(connectToButton);
-		connectButton = new TButton("Connect", 300, 350, 200, 50) {
+		connectButton = new TButton("Connect", 175, 350, 200, 50) {
 			public void doAction() {
 				connect(ipField.getText(), portField.getText());
 			}
@@ -127,6 +126,22 @@ public class GoldenT extends Game {
 		connectButton.setEnabled(false);
 		connectButton.setVisible(false);
 		frame.add(connectButton);
+		cancelWaitButton = new TButton("Cancel", 300, 450, 200, 50) {
+			public void doAction() {
+				mode = -2;
+			}
+		};
+		cancelWaitButton.setEnabled(false);
+		cancelWaitButton.setVisible(false);
+		frame.add(cancelWaitButton);
+		cancelConnectButton = new TButton("Cancel", 425, 350, 200, 50) {
+			public void doAction() {
+				mode = -1;
+			}
+		};
+		cancelConnectButton.setEnabled(false);
+		cancelConnectButton.setVisible(false);
+		frame.add(cancelConnectButton);
     	
     	//make background
     	bg = new ImageBackground(getImage("SuperNova.jpg"),1024,768);
@@ -138,19 +153,17 @@ public class GoldenT extends Game {
     	setMaskColor(c);
     	
     	//get images
-    	BufferedImage lbb = getImage("LargeBlueBall.gif", true);
-    	BufferedImage lgb = getImage("LargeGreenBall.gif", true);
-    	BufferedImage lsb = getImage("LargeSteelBall.gif", true);
-    	c = new Color(255,255,255);
-    	setMaskColor(c);
-    	BufferedImage sob = getImage("SmallOrangeBall.gif", true);
+    	BufferedImage lbb = getImage("MediumRedBall.gif", true);
+    	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
+    	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
+    	BufferedImage sob = getImage("SmallGreenBall.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
     	attck[0] = sob;
     	
-    	//ColorModel cm = sob.getColorModel();
-    	//int pixel = sob.getRGB(0, 0);
-    	//System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
+    	ColorModel cm = sob.getColorModel();
+    	int pixel = sob.getRGB(0, 0);
+    	System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
     	
     	//set up Font
     	Font f = new Font("Helvetica", Font.PLAIN, 30);
@@ -288,32 +301,73 @@ public class GoldenT extends Game {
     	//local variables
     	int startFrame;
 
-    	if(mode == 0){
+    	if(mode == -2){
+    		cancelWaitButton.setEnabled(false);
+    		cancelWaitButton.setVisible(false);
+    		waitButton.setEnabled(true);
+    		waitButton.setVisible(true);
+    		connectToButton.setEnabled(true);
+    		connectToButton.setVisible(true);
+    		frame.update();
+    		mode = 0;
+    	} else if(mode == -1){
+    		waitButton.setEnabled(true);
+    		waitButton.setVisible(true);
+    		connectToButton.setEnabled(true);
+    		connectToButton.setVisible(true);
+    		ipField.setEnabled(false);
+    		ipField.setVisible(false);
+    		portField.setEnabled(false);
+    		portField.setVisible(false);
+    		connectButton.setEnabled(false);
+    		connectButton.setVisible(false);
+    		cancelConnectButton.setEnabled(false);
+    		cancelConnectButton.setVisible(false);
+    		frame.update();
+    		mode = 0;
+    	} else if(mode == 0){
         	frame.update();
     	} else if(mode == 1) {
-    		waitButton.dispose();
-    		connectToButton.dispose();
+    		waitButton.setEnabled(false);
+    		waitButton.setVisible(false);
+    		connectToButton.setEnabled(false);
+    		connectToButton.setVisible(false);
+    		cancelWaitButton.setEnabled(true);
+    		cancelWaitButton.setVisible(true);
     		mode = 2;
         	frame.update();
     	} else if(mode == 2){
     		if(GameController.GameStarted){
+    			GameController.Me = GameSettings.Control.PlayerA;
     			mode = 5;
     		}
         	frame.update();
     	} else if(mode == 3) {
-    		waitButton.dispose();
-    		connectToButton.dispose();
+    		waitButton.setEnabled(false);
+    		waitButton.setVisible(false);
+    		connectToButton.setEnabled(false);
+    		connectToButton.setVisible(false);
     		ipField.setEnabled(true);
     		ipField.setVisible(true);
     		portField.setEnabled(true);
     		portField.setVisible(true);
     		connectButton.setEnabled(true);
     		connectButton.setVisible(true);
+    		cancelConnectButton.setEnabled(true);
+    		cancelConnectButton.setVisible(true);
     		mode = 4;
         	frame.update();
     	} else if (mode == 4){
         	frame.update();
     	} else if (mode == 5){
+			cancelWaitButton.dispose();
+			waitButton.dispose();
+			connectToButton.dispose();
+			ipField.dispose();
+			portField.dispose();
+			connectButton.dispose();
+			cancelConnectButton.dispose();
+			frame.update();
     		Hives.setActive(true);
     		mode = 6;
     	} else { //mode ==6
@@ -441,8 +495,13 @@ public class GoldenT extends Game {
         	frame.render(g);
     	} else if(mode == 2){
     		//display waiting
-    		ann.drawString(g, "Waiting ...", 400 - ann.getWidth("Waiting ...") / 2, 300 - ann.getHeight());
-        	frame.render(g);
+    		ann.drawString(g, "Waiting ...", 400 - ann.getWidth("Waiting ...") / 2, 250 - ann.getHeight());
+        	ann.drawString(g, "Local Port: " + GameController.localPort, 
+        			400 - ann.getWidth("Local Port: " + GameController.localPort) / 2, 300 - ann.getHeight());
+        	ann.drawString(g, "Local IP Address: " + GameController.localInetAddr.toString(), 
+        			400 - ann.getWidth("Local IP Address: " + GameController.localInetAddr.toString()) / 2, 
+        			350 - ann.getHeight());
+    		frame.render(g);
     	} if(mode == 4){
     		label.drawString(g, "IP: ", 350 - label.getWidth("IP: "), 250);
     		label.drawString(g, "Port: ", 375 - label.getWidth("Port: "), 300);
