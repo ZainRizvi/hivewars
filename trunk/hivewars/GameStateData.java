@@ -4,6 +4,7 @@ import hivewars.GameSettings.Control;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //
 //********* Being worked on by Zain ************//
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class GameStateData implements Serializable{
     
 	int gameStateNum;        //clock time when this state occurred
-	ArrayList<Hive> hives; 	   //all hives and their statuses
+	HashMap<Integer,Hive> hives; 	   //all hives and their statuses
 	ArrayList<Attack> attacks; //all attacks under progress
 	
 	
@@ -24,7 +25,7 @@ public class GameStateData implements Serializable{
 	//used to clone gameState
 	public GameStateData(GameStateData gameState){
 		gameStateNum = gameState.gameStateNum;
-		hives = (ArrayList<Hive>) gameState.hives.clone();
+		hives = (HashMap<Integer,Hive>) gameState.hives.clone();
 		attacks = (ArrayList<Attack>) gameState.attacks.clone();
 	}
 

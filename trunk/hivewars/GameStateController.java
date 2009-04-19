@@ -1,6 +1,7 @@
 package hivewars;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 
 
@@ -28,6 +29,7 @@ public class GameStateController {
 		
 	public synchronized void addAttack(Attack attack){
 		gameState.attacks.add(attack);
+		gameState.hives.get(attack.sourceHiveNum);
 	}
 	
 	//removes attack from game state list
@@ -37,14 +39,14 @@ public class GameStateController {
 
 	//for when hive status changes
 	//used to change the controlling player or number of minions
-	public synchronized void updateHive(char hiveNum, 
+	public synchronized void updateHive(int hiveNum, 
 			GameSettings.Control controllingPlayer, 
-			char numMinions){
+			int numMinions){
 		//make sure no more than hiveCapacity minions are in hive
-		Hive hive = gameState.hives.get((int) hiveNum);
+		Hive hive = (Hive) gameState.hives.get(hiveNum);
 		hive.controllingPlayer = controllingPlayer;
 		hive.numMinions = numMinions;
-		gameState.hives.set((int) hiveNum, hive);
+		gameState.hives.put(hiveNum, hive); //TODO: comment out if not needed
 	}
 	
 	public synchronized void ReconcileGS(GameStateData newGS){
@@ -75,7 +77,7 @@ public class GameStateController {
 			gameState.gameStateNum++;
 			
 			// Spawn Minions
-			ArrayList<Hive> hives = gameState.hives;
+			HashMap<Integer, Hive> hives = gameState.hives;
 			for (int i = 0; i < hives.size(); i ++){
 				Hive hive = hives.get(i);				
 				hive.nextSpawnTime--;
@@ -83,6 +85,7 @@ public class GameStateController {
 					hive.nextSpawnTime = hive.spawnRate;					
 					hive.numMinions++;					
 				}				
+				gameState.hives.put(i, hive); //TODO: remove if not necessary
 			}			
 			
 			// Check for collisions
