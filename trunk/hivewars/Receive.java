@@ -49,14 +49,14 @@ public class Receive implements Runnable{
 		while(!GameController.GameFinished){
 			//get incoming game state
 			incomingGS = (GameStateData) GameController.socket.getMessage();String sending = new String();
-			String player = new String();
-	    	if(GameController.Me == Control.PlayerA){
-	    		player += "A";
-	    	} else {
-	    		player += "B";
-	    	}
-	    	System.out.print(player + ">#" + incomingGS.gameStateNum +
-	    			"," + incomingGS.attacks.size() + "atks" + '\t');
+			//String player = new String();
+	    	//if(GameController.Me == Control.PlayerA){
+	    	//	player += "A";
+	    	//} else {
+	    	//	player += "B";
+	    	//}
+	    	//System.out.print(player + "<" + incomingGS.gameStateNum +
+	    	//		"," + incomingGS.attacks.size() + "atks" + '\t');
 			//reconcile incoming game state with master game state
 			GameController.MasterGS.ReconcileGS(incomingGS);			
 		}		
