@@ -6,18 +6,18 @@ import java.io.Serializable;
 public class Attack implements Serializable{
 	
 	public GameSettings.Control player;	    //player originating attack
-	char sourceHiveNum; //where attacking minion originated from
-	char destHiveNum;	//minion's destination
-	short firingTime; 	//GameState number when minion was deployed
+	int sourceHiveNum; //where attacking minion originated from
+	int destHiveNum;	//minion's destination
+	int firingTime; 	//GameState number when minion was deployed
 	
 	//optional: will reduce overall computation time
 	short hitTime;		//GameState number when minion will hit target
 	
-	public Attack(GameSettings.Control player, char sourceHiveNum, char destHiveNum, short firingTime) {
+	public Attack(GameSettings.Control player, int i, int j, int k) {
 		this.player = player;
-		this.sourceHiveNum = sourceHiveNum;
-		this.destHiveNum = destHiveNum;
-		this.firingTime = firingTime;
+		this.sourceHiveNum = i;
+		this.destHiveNum = j;
+		this.firingTime = k;
 	}
 	
 	public static Attack copy(Attack a){		

@@ -28,8 +28,12 @@ public class GameStateController {
 	}
 		
 	public synchronized void addAttack(Attack attack){
-		gameState.attacks.add(attack);
-		gameState.hives.get(attack.sourceHiveNum);
+		Hive hive = gameState.hives.get(attack.sourceHiveNum);
+		if(hive.numMinions>0){
+			hive.numMinions--;
+			gameState.attacks.add(attack);
+			//gameState.hives.put(attack.sourceHiveNum, hive); // TODO: remove if not needed
+		}
 	}
 	
 	//removes attack from game state list
