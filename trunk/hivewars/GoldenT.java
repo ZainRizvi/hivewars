@@ -399,7 +399,18 @@ public class GoldenT extends Game {
 		    			//*explosion*
 		    		}
 		    	}
+<<<<<<< .mine
+		    	
+		    	//update attacks
+		    	//add or subtract correct number of attack sprites to sprite group
+		    	while(currentGS.attacks.size() < attacks.size()) {
+		    		attacks.get(attacks.size() - 1).setActive(false);
+		    		attacks.remove(attacks.size() - 1);
+		    		Attacks.removeInactiveSprites();
+		    	}
+=======
 
+>>>>>>> .r52
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
 		    		a.setAnimationFrame(0, 0);
@@ -425,9 +436,9 @@ public class GoldenT extends Game {
 		    		//*set animations*
 		    	}
 		    	
-		    	//check collisons, boundary and sprite to sprite
-		    	attackToHive.checkCollision();
+		    	//check boundary collisions
 		    	outOfBounds.checkCollision();
+		    	
 	    	}
 	    	
 	    	//check for mouse event
