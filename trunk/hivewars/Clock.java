@@ -108,11 +108,14 @@ public class Clock implements Runnable{
     	//		"," + GameController.ViewableGS.readGameState().attacks.size() + "atks" + '\t');    	
     //	System.out.println(player + " sending game state " + GameController.ViewableGS.readGameState().gameStateNum +
     //			" Num attacks = " + GameController.ViewableGS.readGameState().attacks.size());
+    	
+    	GameController.ViewableGS.getSemaphore();
     	System.out.println("TX: " + GameController.ViewableGS.readGameState().gameStateNum);
     	GameController.socket.sendMessage(
     			GameController.ViewableGS.readGameState(), 
     			GameController.remoteInetAddr, 
     			GameController.remotePort);
+    	GameController.ViewableGS.releaseSemaphore();
     }
     
     
