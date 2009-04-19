@@ -106,19 +106,19 @@ public class GoldenT extends Game {
 		portField.setEnabled(false);
 		portField.setVisible(false);
 		frame.add(portField);
-		waitButton = new TButton("Wait for opponent", 150, 200, 200, 50) {
+		waitButton = new TButton("Wait for opponent", 150, 250, 200, 50) {
 			public void doAction() {
 				mode = 1;
 			}
 		};
 		frame.add(waitButton);
-		connectToButton = new TButton("Connect to ...", 450, 200, 200, 50) {
+		connectToButton = new TButton("Connect to ...", 450, 250, 200, 50) {
 			public void doAction() {
 				mode = 3;
 			}
 		};
 		frame.add(connectToButton);
-		connectButton = new TButton("Connect", 175, 350, 200, 50) {
+		connectButton = new TButton("Connect", 425, 375, 200, 50) {
 			public void doAction() {
 				connect(ipField.getText(), portField.getText());
 			}
@@ -134,8 +134,8 @@ public class GoldenT extends Game {
 		cancelWaitButton.setEnabled(false);
 		cancelWaitButton.setVisible(false);
 		frame.add(cancelWaitButton);
-		cancelConnectButton = new TButton("Cancel", 425, 350, 200, 50) {
-			public void doAction() {
+		cancelConnectButton = new TButton("Cancel", 175, 375, 200, 50) {
+			public void doAction() { 
 				mode = -1;
 			}
 		};
@@ -156,7 +156,7 @@ public class GoldenT extends Game {
     	BufferedImage lbb = getImage("MediumRedBall.gif", true);
     	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
     	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
-    	BufferedImage sob = getImage("greenBall.png", true);
+    	BufferedImage sob = getImage("SmallGreenBall.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
     	attck[0] = sob;
@@ -370,7 +370,7 @@ public class GoldenT extends Game {
 			frame.update();
     		Hives.setActive(true);
     		mode = 6;
-    	} else { //mode ==6
+    	} else if(mode == 6){
     		//System.out.println(GameController.Me);
     		//System.out.println(GameController.GameStarted);
 	    	//update currentGS from ViewableGS
@@ -480,8 +480,14 @@ public class GoldenT extends Game {
 	    		}
 	    	}
 	    	//*tell sprites which way to face when they are walking*
-	    	
-    	} //end mode 3
+    		
+	    	if(GameController.GameFinished){
+    			mode = 7;
+    			System.out.println("Game finished!!");
+    		}
+    	} else {	//mode == 7
+    		System.out.println("Game finished!!");
+    	}
     	
     	//update playfield
     	playfield.update(elapsedTime);
@@ -523,6 +529,19 @@ public class GoldenT extends Game {
             	sf.drawString(g, minionNumbers.get(k).Minions, GameFont.CENTER, minionNumbers.get(k).x, 
             			minionNumbers.get(k).y, sf.getWidth('1') * minionNumbers.get(k).Minions.length());
         	}
+    	} else if(mode == 7){
+    		InetAddress winner;
+    		c = new Color(124, 255, 127);
+    		title.setColor(Color.RED);
+    		title.drawString(g, "GameOver", 400 - title.getWidth("GameOver") / 2, 200 - title.getHeight());
+    		if(GameController.Winner == GameController.Me){
+    			winner = GameController.localInetAddr;
+    		} else {
+    			winner = GameController.remoteInetAddr;
+    		}
+    		title.drawString(g, winner.toString() + " wins!", 
+    				400 - title.getWidth(winner.toString() + " wins!") / 2, 200 + 10 + title.getHeight());
+        	frame.render(g);
     	}
     }
 
