@@ -39,11 +39,13 @@ public class Clock implements Runnable{
     	
     	GameController.ViewableGS.getSemaphore();
     	
-    	if(currentAttack != null){
-    		GameController.ViewableGS.addAttack(currentAttack); 
-
-			System.out.println("Current Attack: " + currentAttack);
-    		GameController.writeCurrentAttack(null);  //reset current attack variable
+    	if(!GameController.StopAttacks){
+	    	if(currentAttack != null){
+	    		GameController.ViewableGS.addAttack(currentAttack); 
+	
+				System.out.println("Current Attack: " + currentAttack);
+	    		GameController.writeCurrentAttack(null);  //reset current attack variable
+	    	}
     	}
     	
     	//determine which attacking minions have reached their target, 
@@ -65,8 +67,13 @@ public class Clock implements Runnable{
     			playerBTerr++;
     		}
     	}
-    	if((playerATerr == hives.size()) || (playerBTerr == hives.size())){
-    		GameController.GameFinished = true;
+    	if(playerATerr == hives.size()){
+    		GameController.Winner = Control.PlayerA;
+    		GameController.StopAttacks = true;
+    	}
+    	if(playerBTerr == hives.size()){
+    		GameController.Winner = Control.PlayerB;
+    		GameController.StopAttacks = true;
     	}
     }
     
