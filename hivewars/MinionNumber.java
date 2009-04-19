@@ -16,8 +16,8 @@ public class MinionNumber {
 		y = Y;
 	}
 	
-	public void setNumber(char n) {
-		Minions = Character.toString(n);
+	public void setNumber(int i) {
+		Minions = Integer.toString(i);
 	}
 
 }
