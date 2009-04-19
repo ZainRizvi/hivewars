@@ -31,10 +31,22 @@ public class GameStateController {
 		
 	public synchronized void addAttack(Attack attack){
 		Hive hive = gameState.hives.get(attack.sourceHiveNum);
+		// Make sure hive has minions to shoot
 		if(hive.numMinions>0){
-			if(!gameState.attacks.contains(attack)){
-				hive.numMinions--;
+			boolean attackExists = false;
+			for(int i = 0; i < gameState.attacks.size(); i ++){
+				Attack existingattack = gameState.attacks.get(i);				
+				if (attack.destHiveNum == existingattack.destHiveNum
+						&& attack.sourceHiveNum == existingattack.sourceHiveNum
+						&& attack.firingTime == existingattack.firingTime){
+					attackExists = true;
+					break;
+				}				
+			}
+			
+			if (!attackExists){
 				gameState.attacks.add(attack);
+				hive.numMinions--;
 			}
 		}
 	}
