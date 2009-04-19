@@ -60,6 +60,7 @@ public class Receive implements Runnable{
 			//reconcile incoming game state with master game state
 			//GameController.MasterGS.ReconcileGS(incomingGS);
 			ReconcileMasterGS(incomingGS);
+			System.out.print("MS:" + GameController.MasterGS + " VS: " + GameController.ViewableGS + '\t'); 
 		}		
 	}
 	
