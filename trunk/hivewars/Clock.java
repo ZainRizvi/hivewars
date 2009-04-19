@@ -1,5 +1,9 @@
 package hivewars;
 
+import hivewars.GameSettings.Control;
+
+import java.util.HashMap;
+
 /***
  * Name: Clock
  * Description: Updates user variable and sends across UDP
@@ -49,6 +53,18 @@ public class Clock implements Runnable{
     	GameController.ViewableGS.fastForward(currentState + 1);
     	
     	GameController.ViewableGS.releaseSemaphore();
+    	
+    	//TODO: see if one player controls all bases => game is over!
+    	HashMap<Integer,Hive> hives = GameController.ViewableGS.readGameState().hives;
+    	int playerATerr = 0;
+    	int playerBTerr = 0;
+    	for(int i = 0; i < hives.size(); i++){
+    		if (hives.get(i).controllingPlayer ==  Control.PlayerA){
+    			playerATerr++;
+    		} else if (hives.get(i).controllingPlayer ==  Control.PlayerB){
+    			playerBTerr++;
+    		}
+    	}
     }
     
     public static void transmitCurrentViewable(){
