@@ -104,7 +104,7 @@ public class GameController implements GameSettings{
 	public static void writeCurrentAttack(Attack newAttack) throws InterruptedException{
 		if(newAttack != null){
 			double hyp;
-			int xv, xdist, ydist;
+			int xv, yv, xdist, ydist;
 			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x;
 			int destX = Map.hives.get(newAttack.destHiveNum).x;
 			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y;
@@ -114,8 +114,14 @@ public class GameController implements GameSettings{
 			ydist = destY - sourceY;
 			hyp =  Math.sqrt(xdist*xdist + ydist*ydist);
 			xv = (int) ((xdist / hyp) * GameSettings.ATTACK_SPEED);
-			newAttack.hitTime = (short) (newAttack.firingTime + xdist / xv);
-			System.out.println("hitTime: " + newAttack.hitTime);
+			yv = (int) ((ydist / hyp) * GameSettings.ATTACK_SPEED);
+			//System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
+			if(xv == 0){
+				newAttack.hitTime = (short) (newAttack.firingTime + ydist / yv);
+			} else {
+				newAttack.hitTime = (short) (newAttack.firingTime + xdist / xv);
+			}
+			//System.out.println("hitTime: " + newAttack.hitTime);
 		}
 		attackMutex.acquire();
 		CurrentAttack = newAttack;
