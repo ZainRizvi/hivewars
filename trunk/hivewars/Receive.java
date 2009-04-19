@@ -65,9 +65,11 @@ public class Receive implements Runnable{
 			
 			//reconcile incoming game state with master game state
 			//GameController.MasterGS.ReconcileGS(incomingGS);
-			
-			System.out.println("RX: " + incomingGS.gameStateNum);
+			GameStateData mst = GameController.MasterGS.readGameState();
+			System.out.print("RX: in: " + incomingGS.gameStateNum + ",a" + incomingGS.attacks.size() + " mstbefore: " + mst.gameStateNum + ",a" + mst.attacks.size() );
 			ReconcileMasterGS(incomingGS);
+			mst = GameController.MasterGS.readGameState();
+			System.out.print("  mstafter: " + mst.gameStateNum + ",a" + mst.attacks.size());
 			//System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
 		}		
 	}

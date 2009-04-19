@@ -88,7 +88,7 @@ public class GameStateController {
 		// Assumes that the gameState's gameStateNum has not been advanced
 		
 		if (gameState.gameStateNum >= finalStateNum){
-			System.out.println("WTF?");
+			System.out.println("Trying to rewind?");
 			return;
 		}
 		
