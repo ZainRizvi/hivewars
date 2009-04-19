@@ -387,7 +387,7 @@ public class GoldenT extends Game {
 						selectedHive = k;
 	    			}
 	    		}  	
-	    		if(selectedHive != -1) System.out.println("outside if selected: " + selectedHive + " click: " + click + " controlling player: " + currentGS.hives.get(selectedHive).controllingPlayer);
+	    		//if(selectedHive != -1) System.out.println("outside if selected: " + selectedHive + " click: " + click + " controlling player: " + currentGS.hives.get(selectedHive).controllingPlayer);
 	    		if(click == 0){
 	    			if(selectedHive == -1){
 	    				click = 0;

@@ -1,5 +1,7 @@
 package hivewars;
 
+import hivewars.GameSettings.Control;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Semaphore;
@@ -30,9 +32,10 @@ public class GameStateController {
 	public synchronized void addAttack(Attack attack){
 		Hive hive = gameState.hives.get(attack.sourceHiveNum);
 		if(hive.numMinions>0){
-			hive.numMinions--;
-			gameState.attacks.add(attack);
-			//gameState.hives.put(attack.sourceHiveNum, hive); // TODO: remove if not needed
+			if(!gameState.attacks.contains(attack)){
+				hive.numMinions--;
+				gameState.attacks.add(attack);
+			}
 		}
 	}
 	
@@ -79,40 +82,45 @@ public class GameStateController {
 		
 		while (gameState.gameStateNum < finalStateNum){			
 			gameState.gameStateNum++;
-			
+
 			// Spawn Minions
 			HashMap<Integer, Hive> hives = gameState.hives;
 			for (int i = 0; i < hives.size(); i ++){
-				Hive hive = hives.get(i);				
+				Hive hive = hives.get(i);
 				hive.nextSpawnTime--;
-				if (hive.nextSpawnTime == 0){
-					hive.nextSpawnTime = hive.spawnRate;					
-					hive.numMinions++;					
-				}				
+				if (hive.nextSpawnTime <= 0){
+					hive.nextSpawnTime = hive.spawnRate;
+					if(hive.numMinions < hive.hiveCapacity){
+						hive.numMinions++;
+					}
+					//System.out.println("new minion count: " + hive.numMinions);
+				}
+				//System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
+				
 				gameState.hives.put(i, hive); //TODO: remove if not necessary
-			}			
+			}
 			
 			// Check for collisions
 			ArrayList<Attack> attacks = gameState.attacks;
 			for (int i = 0; i < attacks.size(); i ++){
 				Attack attack = attacks.get(i);
-				
+				//System.out.println("processing attack")
 				if (attack.hitTime == gameState.gameStateNum){
 					Hive hive = hives.get(attack.destHiveNum);
+					System.out.println("Hit registered on hive " + attack.destHiveNum);
+					System.out.println("Old hive count = " + hive.numMinions);
 					if (attack.player == hive.controllingPlayer){
 						hive.numMinions++;
-					}else if(hive.controllingPlayer == GameSettings.Control.Neutral){
+					}else {
 						hive.numMinions--;
-						if (hive.numMinions == -1){
+						if(hive.numMinions == 0){
+							hive.controllingPlayer = Control.Neutral;
+						} else if (hive.numMinions < 0){
 							hive.controllingPlayer = attack.player;
 							hive.numMinions = 1;
 						}
-					}else{ // The other player owns the hive
-						hive.numMinions--;
-						if(hive.numMinions == 0){
-							hive.controllingPlayer = GameSettings.Control.Neutral;
-						}
 					}
+					System.out.println("New hive count = " + hive.numMinions);
 					attacks.remove(i);
 				}				
 			}			

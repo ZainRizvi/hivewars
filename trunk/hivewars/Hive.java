@@ -6,7 +6,7 @@ import java.io.Serializable;
 public class Hive implements Serializable{
 	
 	// Defined in HiveDefinition
-	public final int Base;				//base number
+	public final int id;				//base number
 	public final GameSettings.Control startingPlayer;
 	public final int startingMinions;
 	public final int spawnRate;   		//time (in 100 miliseconds) before new minion is generated 
@@ -29,12 +29,13 @@ public class Hive implements Serializable{
 			int x, 
 			int y){
 		
-		this.Base = id;
+		this.id = id;
 		this.startingPlayer = startingPlayer;
 		this.controllingPlayer = startingPlayer;
 		this.startingMinions = startingMinions;
 		this.numMinions = (char) startingMinions;
 		this.spawnRate = spawnRate;
+		this.nextSpawnTime = spawnRate;
 		this.hiveCapacity = maxSize;
 		this.x = x;
 		this.y = y;
