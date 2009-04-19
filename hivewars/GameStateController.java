@@ -18,7 +18,10 @@ public class GameStateController {
 	}
 	
 	public synchronized GameStateData readGameState(){
-		return new GameStateData(gameState);
+		this.getSemaphore();
+		GameStateData gsd = new GameStateData(gameState);
+		this.releaseSemaphore();
+		return gsd;
 	}
 	
 	public synchronized void updateGameState(GameStateData newGameState){
