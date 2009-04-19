@@ -53,7 +53,6 @@ public class GameStateController {
 		Hive hive = (Hive) gameState.hives.get(hiveNum);
 		hive.controllingPlayer = controllingPlayer;
 		hive.numMinions = numMinions;
-		gameState.hives.put(hiveNum, hive); //TODO: comment out if not needed
 	}
 	
 	public synchronized void ReconcileGS(GameStateData newGS){
@@ -96,16 +95,17 @@ public class GameStateController {
 					//System.out.println("new minion count: " + hive.numMinions);
 				}
 				//System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
-				
-				gameState.hives.put(i, hive); //TODO: remove if not necessary
 			}
 			
 			// Check for collisions
 			ArrayList<Attack> attacks = gameState.attacks;
 			for (int i = 0; i < attacks.size(); i ++){
 				Attack attack = attacks.get(i);
-				//System.out.println("processing attack")
-				if (attack.hitTime == gameState.gameStateNum){
+				//System.out.println("state num: " + gameState.gameStateNum);
+				//System.out.println("processing attack: hitTime = " + attack.hitTime + ", gameSN = " + gameState.gameStateNum);
+				//System.out.println("num attacks: " + attacks.size());
+				if (attack.hitTime <= gameState.gameStateNum){
+					System.out.println(attack); 
 					Hive hive = hives.get(attack.destHiveNum);
 					System.out.println("Hit registered on hive " + attack.destHiveNum);
 					System.out.println("Old hive count = " + hive.numMinions);

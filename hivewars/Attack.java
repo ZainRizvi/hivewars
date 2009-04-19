@@ -9,9 +9,7 @@ public class Attack implements Serializable{
 	int sourceHiveNum; //where attacking minion originated from
 	int destHiveNum;	//minion's destination
 	int firingTime; 	//GameState number when minion was deployed
-	
-	//optional: will reduce overall computation time
-	short hitTime;		//GameState number when minion will hit target
+	int hitTime;		//GameState number when minion will hit target
 	
 	public Attack(GameSettings.Control player, int i, int j, int k) {
 		this.player = player;
@@ -22,7 +20,9 @@ public class Attack implements Serializable{
 	
 	public static Attack copy(Attack a){		
 		if(a != null){
-			return new Attack(a.player, a.sourceHiveNum, a.destHiveNum, a.firingTime);
+			Attack newAttack = new Attack(a.player, a.sourceHiveNum, a.destHiveNum, a.firingTime);
+			newAttack.hitTime = a.hitTime;
+			return newAttack;
 		} else {
 			return null;
 		}
@@ -42,5 +42,9 @@ public class Attack implements Serializable{
 			return false;
 		}
 		return true;	
+	}
+	
+	public String toString(){
+		return (player + ": from " + sourceHiveNum + " to " + destHiveNum + " - hit time = " + hitTime);
 	}
 }

@@ -36,8 +36,10 @@ public class Clock implements Runnable{
     	GameController.ViewableGS.getSemaphore();
     	
     	if(currentAttack != null){
-    		GameController.ViewableGS.addAttack(currentAttack);   
-    		GameController.writeCurrentAttack(null);
+    		GameController.ViewableGS.addAttack(currentAttack); 
+
+			System.out.println("Current Attack: " + currentAttack);
+    		GameController.writeCurrentAttack(null);  //reset current attack variable
     	}
     	
     	//determine which attacking minions have reached their target, 
