@@ -82,23 +82,20 @@ public class GameStateController {
 		while (gameState.gameStateNum < finalStateNum){			
 			gameState.gameStateNum++;
 
+			// Spawn Minions
 			HashMap<Integer, Hive> hives = gameState.hives;
-
-	    	if(!GameController.StopAttacks){
-				// Spawn Minions
-				for (int i = 0; i < hives.size(); i ++){
-					Hive hive = hives.get(i);
-					hive.nextSpawnTime--;
-					if (hive.nextSpawnTime <= 0){
-						hive.nextSpawnTime = hive.spawnRate;
-						if(hive.numMinions < hive.hiveCapacity){
-							hive.numMinions++;
-						}
-						//System.out.println("new minion count: " + hive.numMinions);
+			for (int i = 0; i < hives.size(); i ++){
+				Hive hive = hives.get(i);
+				hive.nextSpawnTime--;
+				if (hive.nextSpawnTime <= 0){
+					hive.nextSpawnTime = hive.spawnRate;
+					if(hive.numMinions < hive.hiveCapacity){
+						hive.numMinions++;
 					}
-					//System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
+					//System.out.println("new minion count: " + hive.numMinions);
 				}
-	    	}
+				//System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
+			}
 			
 			// Check for collisions
 			ArrayList<Attack> attacks = gameState.attacks;

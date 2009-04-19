@@ -43,7 +43,7 @@ public class GameController implements GameSettings{
 	
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
-	static boolean StopAttacks	 = false; //stop attacks before finishing game
+	static boolean StopAttacks = false; //stop attacks before finishing game
 	//who am I: PlayerA, PlayerB, Neutral
 	static GameSettings.Control Me = GameSettings.Control.Neutral;
 	public static Control Winner;  //game winner
