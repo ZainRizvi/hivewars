@@ -43,7 +43,7 @@ public class GameController implements GameSettings{
 	static boolean GameFinished = false;
 	
 	//who am I: PlayerA, PlayerB, Neutral
-	static Control Me = Control.Neutral;
+	static GameSettings.Control Me = GameSettings.Control.Neutral;
 	
 	public static void main(String[] args) {
         //initialize reconcile
@@ -78,7 +78,7 @@ public class GameController implements GameSettings{
 			// Start playing. when player A will start when he receives player B's first state  
 			GameStarted = true; 
 		}
-		
+		System.out.println("getting somewhere: " + Me);
 		// Player A wait for Player B to send him a game state.  
 		//    Allows him to learn B's inet and port address
 		while (!GameStarted);
