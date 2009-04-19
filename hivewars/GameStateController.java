@@ -11,7 +11,7 @@ import java.util.concurrent.Semaphore;
 public class GameStateController {
 	
 	private GameStateData gameState;
-	private static final Semaphore GSFree = new Semaphore(1, true);
+	private final Semaphore GSFree = new Semaphore(1, true);
 
 	public GameStateController() {
 		gameState = new GameStateData();
@@ -140,10 +140,4 @@ public class GameStateController {
 	public void releaseSemaphore(){
 	  GSFree.release();
 	}	
-	
-	public static void main (String[] args){
-		GameStateController gs = new GameStateController();
-	}
-
-	
 }
