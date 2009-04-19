@@ -43,9 +43,10 @@ public class GameController implements GameSettings{
 	
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
-	
+	static boolean 	 = false; //stop attacks before finishing game
 	//who am I: PlayerA, PlayerB, Neutral
 	static GameSettings.Control Me = GameSettings.Control.Neutral;
+	public static Control Winner;  //game winner
 	
 	public static void main(String[] args) {
         //initialize reconcile
