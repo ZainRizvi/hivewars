@@ -156,7 +156,7 @@ public class GoldenT extends Game {
     	BufferedImage lbb = getImage("MediumRedBall.gif", true);
     	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
     	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
-    	BufferedImage sob = getImage("SmallGreenBall.gif", true);
+    	BufferedImage sob = getImage("greenBall.png", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
     	attck[0] = sob;
@@ -531,16 +531,17 @@ public class GoldenT extends Game {
         	}
     	} else if(mode == 7){
     		InetAddress winner;
-    		c = new Color(124, 255, 127);
-    		title.setColor(Color.RED);
+    		c = new Color(186, 241, 0);
+    		title.setColor(c);
     		title.drawString(g, "GameOver", 400 - title.getWidth("GameOver") / 2, 200 - title.getHeight());
     		if(GameController.Winner == GameController.Me){
     			winner = GameController.localInetAddr;
     		} else {
     			winner = GameController.remoteInetAddr;
     		}
-    		title.drawString(g, winner.toString() + " wins!", 
-    				400 - title.getWidth(winner.toString() + " wins!") / 2, 200 + 10 + title.getHeight());
+    		err.setColor(c);
+    		err.drawString(g, winner.toString() + " wins!", 
+    				400 - err.getWidth(winner.toString() + " wins!") / 2, 200 + 10);
         	frame.render(g);
     	}
     }

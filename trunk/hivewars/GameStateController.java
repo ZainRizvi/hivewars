@@ -111,6 +111,10 @@ public class GameStateController {
 					System.out.println("Old hive count = " + hive.numMinions);
 					if (attack.player == hive.controllingPlayer){
 						hive.numMinions++;
+		//				//hack prevention code below
+		//				if(hive.numMinions > hive.hiveCapacity){
+		//					hive.numMinions = hive.hiveCapacity;
+		//			}
 					}else {
 						hive.numMinions--;
 						if(hive.numMinions == 0){

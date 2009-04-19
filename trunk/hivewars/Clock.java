@@ -2,6 +2,7 @@ package hivewars;
 
 import hivewars.GameSettings.Control;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /***
@@ -32,6 +33,13 @@ public class Clock implements Runnable{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		if(GameController.LastHit > GameController.ViewableGS.readGameState().gameStateNum){
+			//if(GameController.MasterGS.readGameState().attacks.size() <= 0){
+				System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
+				GameController.GameFinished = true;
+			//}
+		}
     }
     
     public static void createNewViewableGameState() throws InterruptedException{
@@ -46,6 +54,8 @@ public class Clock implements Runnable{
 				System.out.println("Current Attack: " + currentAttack);
 	    		GameController.writeCurrentAttack(null);  //reset current attack variable
 	    	}
+    	} else {
+    		System.out.println("Didn't register the attack");
     	}
     	
     	//determine which attacking minions have reached their target, 
@@ -74,6 +84,16 @@ public class Clock implements Runnable{
     	if(playerBTerr == hives.size()){
     		GameController.Winner = Control.PlayerB;
     		GameController.StopAttacks = true;
+    	}
+    	if(GameController.StopAttacks == true){
+    		int lastHit = 0;
+    		ArrayList<Attack> remainingAttacks = GameController.ViewableGS.readGameState().attacks; 
+    		for(int i = 0; i < remainingAttacks.size(); i++){
+    			if(remainingAttacks.get(i).hitTime > lastHit){
+    				lastHit = remainingAttacks.get(i).hitTime ;
+    			}
+    		}
+    		GameController.LastHit = lastHit;
     	}
     }
     
