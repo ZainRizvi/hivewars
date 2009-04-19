@@ -29,4 +29,10 @@ public class GameStateData implements Serializable{
 		attacks = (ArrayList<Attack>) gameState.attacks.clone();
 	}
 
+	
+	public String GameStateData(){
+		String s = new String();
+		s += "Att#=" + attacks.size();
+		return s;
+	}
 }
