@@ -65,6 +65,9 @@ public class Clock implements Runnable{
     			playerBTerr++;
     		}
     	}
+    	if((playerATerr == hives.size()) || (playerBTerr == hives.size())){
+    		GameController.GameFinished = true;
+    	}
     }
     
     public static void transmitCurrentViewable(){
