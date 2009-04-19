@@ -98,6 +98,16 @@ public class Clock implements Runnable{
     }
     
     public static void transmitCurrentViewable(){
+    	String player = new String();
+    	if(GameController.Me == Control.PlayerA){
+    		player += "A";
+    	} else {
+    		player += "B";
+    	}
+    	System.out.print(player + ">" + GameController.ViewableGS.readGameState().gameStateNum +
+    			"," + GameController.ViewableGS.readGameState().attacks.size() + "atks" + '\t');    	
+    //	System.out.println(player + " sending game state " + GameController.ViewableGS.readGameState().gameStateNum +
+    //			" Num attacks = " + GameController.ViewableGS.readGameState().attacks.size());
     	GameController.socket.sendMessage(
     			GameController.ViewableGS.readGameState(), 
     			GameController.remoteInetAddr, 
