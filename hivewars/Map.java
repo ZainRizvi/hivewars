@@ -10,9 +10,9 @@ public class Map {
 	
 
 	public Map() {
-		hives.put(0,new Hive(0, GameSettings.Control.PlayerA, 12, 1, 250, 50, 50));
-		hives.put(1,new Hive(1, GameSettings.Control.PlayerB, 10, 1, 250, 600, 440));
-		hives.put(2,new Hive(2, GameSettings.Control.Neutral, 5, 1, 250, 300, 210));		
+		hives.put(0,new Hive(0, GameSettings.Control.PlayerA, 12, 10, 20, 50, 50));
+		hives.put(1,new Hive(1, GameSettings.Control.PlayerB, 10, 10, 20, 600, 440));
+		hives.put(2,new Hive(2, GameSettings.Control.Neutral, 5, 20, 10, 300, 210));		
 		calculateDistances();		
 	}
 
