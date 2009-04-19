@@ -153,9 +153,9 @@ public class GoldenT extends Game {
     	setMaskColor(c);
     	
     	//get images
-    	BufferedImage lbb = getImage("redBase.png", true);
-    	BufferedImage lgb = getImage("blueBase.png", true);
-    	BufferedImage lsb = getImage("grayBase.png", true);
+    	BufferedImage lbb = getImage("MediumRedBall.gif", true);
+    	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
+    	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
     	BufferedImage sob = getImage("greenBall.png", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
