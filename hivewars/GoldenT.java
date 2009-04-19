@@ -300,13 +300,7 @@ public class GoldenT extends Game {
     public void update(long elapsedTime) {
     	//local variables
     	int startFrame;
-    	
-    	//update attacks
-    	//add or subtract correct number of attack sprites to sprite group
-    	while(currentGS.attacks.size() < attacks.size()) {
-    		attacks.remove(attacks.size() - 1);
-    		Attacks.removeInactiveSprites();
-    	}
+
     	if(mode == -2){
     		cancelWaitButton.setEnabled(false);
     		cancelWaitButton.setVisible(false);
@@ -399,7 +393,6 @@ public class GoldenT extends Game {
 		    			//*explosion*
 		    		}
 		    	}
-<<<<<<< .mine
 		    	
 		    	//update attacks
 		    	//add or subtract correct number of attack sprites to sprite group
@@ -408,9 +401,6 @@ public class GoldenT extends Game {
 		    		attacks.remove(attacks.size() - 1);
 		    		Attacks.removeInactiveSprites();
 		    	}
-=======
-
->>>>>>> .r52
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
 		    		a.setAnimationFrame(0, 0);
