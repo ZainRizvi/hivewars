@@ -48,7 +48,10 @@ public class Receive implements Runnable{
 		
 		while(!GameController.GameFinished){
 			//get incoming game state
-			incomingGS = (GameStateData) GameController.socket.getMessage();String sending = new String();
+			incomingGS = (GameStateData) GameController.socket.getMessage();
+			
+			
+			/*	
 			String player = new String();
 	    	if(GameController.Me == Control.PlayerA){
 	    		player += "A";
@@ -57,10 +60,15 @@ public class Receive implements Runnable{
 	    	}
 	    	System.out.print(player + "<" + incomingGS.gameStateNum +
 	    			"," + incomingGS.attacks.size() + "atks" + '\t');
+	    			
+	    	*/
+			
 			//reconcile incoming game state with master game state
 			//GameController.MasterGS.ReconcileGS(incomingGS);
+			
+			System.out.println("RX: " + incomingGS.gameStateNum);
 			ReconcileMasterGS(incomingGS);
-			System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
+			//System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
 		}		
 	}
 	
