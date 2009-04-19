@@ -18,6 +18,7 @@ import com.golden.gamedev.object.background.*;
 import com.golden.gamedev.object.collision.*;
 import com.golden.gamedev.object.font.BitmapFont;
 import com.golden.gamedev.object.font.SystemFont;
+import com.golden.gamedev.object.sprite.VolatileSprite;
 import com.golden.gamedev.engine.BaseInput;
 import com.golden.gamedev.engine.input.*;
 import com.golden.gamedev.gui.*;
@@ -46,6 +47,7 @@ public class GoldenT extends Game {
 	int selectedHive, sourceHive, destHive;
 	int mode;
 	//sprites
+	VolatileSprite explosion;
 	ArrayList<AnimatedSprite> hives, attacks;
 	SpriteGroup Hives, Attacks;
 	//colisions
