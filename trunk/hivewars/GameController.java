@@ -65,15 +65,7 @@ public class GameController implements GameSettings{
 		// Initialize game state receiver thread.  Game starts for player A when 
 		//   he receives the first communication.
 		new Receive();
-		
-		//remotePort = 50000;
-		try {
-			remoteInetAddr = InetAddress.getLocalHost();
-		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+			
 		//start Gui
 		new Gui();
 		
