@@ -82,7 +82,7 @@ public class GameController implements GameSettings{
 		//   he receives the first communication.
 		new Receive();
 		
-		//System.out.println(Option + " " + arg0 + " " + arg1);
+		////System.out.println(Option + " " + arg0 + " " + arg1);
 		//start Gui
 		new Gui();
 		try {
@@ -91,7 +91,7 @@ public class GameController implements GameSettings{
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.out.println("Gui initialized");
+		//System.out.println("Gui initialized");
 		
 		while(Me == Control.Neutral){
 			//player hasn't chosen to host or join yet
@@ -104,7 +104,7 @@ public class GameController implements GameSettings{
 			// Start playing. when player A will start when he receives player B's first state  
 			GameStarted = true; 
 		}
-		System.out.println("getting somewhere: " + Me);
+		//System.out.println("getting somewhere: " + Me);
 		// Player A wait for Player B to send him a game state.  
 		//    Allows him to learn B's inet and port address
 		while (!GameStarted);
@@ -138,13 +138,13 @@ public class GameController implements GameSettings{
 			hyp = Math.sqrt(xdist*xdist + ydist*ydist);
 			xv = ((xdist / hyp) * GameSettings.ATTACK_SPEED);
 			yv = ((ydist / hyp) * GameSettings.ATTACK_SPEED);
-			//System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
+			////System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
 			if(xv == 0){
 				newAttack.hitTime = (short) (newAttack.firingTime + ydist / yv);
 			} else {
 				newAttack.hitTime = (short) (newAttack.firingTime + xdist / xv);
 			}
-			//System.out.println("hitTime: " + newAttack.hitTime);
+			////System.out.println("hitTime: " + newAttack.hitTime);
 		}
 		attackMutex.acquire();
 		CurrentAttack = newAttack;

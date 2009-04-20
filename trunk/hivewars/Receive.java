@@ -68,7 +68,7 @@ public class Receive implements Runnable{
 	    	} else {
 	    		player += "B";
 	    	}
-	    	System.out.print(player + "<" + incomingGS.gameStateNum +
+	    	//System.out.print(player + "<" + incomingGS.gameStateNum +
 	    			"," + incomingGS.attacks.size() + "atks" + '\t');
 	    			
 	    	*/
@@ -76,12 +76,12 @@ public class Receive implements Runnable{
 			//reconcile incoming game state with master game state
 			//GameController.MasterGS.ReconcileGS(incomingGS);
 			GameStateData mst = GameController.MasterGS.readGameState();
-			System.out.print("RX: in: " + incomingGS.gameStateNum + ",a" + incomingGS.attacks.size() + " mstbefore: " + mst.gameStateNum + ",a" + mst.attacks.size() );
+			//System.out.print("RX: in: " + incomingGS.gameStateNum + ",a" + incomingGS.attacks.size() + " mstbefore: " + mst.gameStateNum + ",a" + mst.attacks.size() );
 			ReconcileMasterGS(incomingGS);			
 			mst = GameController.MasterGS.readGameState();
-			//System.out.println(mst);
-			System.out.println("  mstafter: " + mst.gameStateNum + ",a" + mst.attacks.size());
-			//System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
+			////System.out.println(mst);
+			//System.out.println("  mstafter: " + mst.gameStateNum + ",a" + mst.attacks.size());
+			////System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
 		}		
 	}
 	
@@ -90,7 +90,7 @@ public class Receive implements Runnable{
 	// Reconciles the Master and Viewable game states with incoming game state
 	//
 	public synchronized void ReconcileMasterGS(GameStateData newGS){
-		System.out.println("ReconcileMasterGS");
+		//System.out.println("ReconcileMasterGS");
 		GameController.MasterGS.getSemaphore();
 		
 		int oldStateNum = GameController.MasterGS.readGameState().gameStateNum;
@@ -125,7 +125,7 @@ public class Receive implements Runnable{
 				if(attack.firingTime > maxFiring  && attack.player != GameController.Me){
 					maxFiring = attack.firingTime;
 				}
-				System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
+				//System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
 				GameController.MasterGS.addAttack(attack);
 				GameController.ViewableGS.addAttack(attack);
 			}

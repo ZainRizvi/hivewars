@@ -60,14 +60,14 @@ public class Map {
 	
 	public void printDistances(){
 		for (int i = 0; i < distances.length; i++){
-			System.out.print("[");
+			//System.out.print("[");
 			for (int j = 0; j < distances.length; j++){
-				System.out.print(distances[i][j]);
+				//System.out.print(distances[i][j]);
 				if (j != distances.length - 1){
-					System.out.print("\t");
+					//System.out.print("\t");
 				}
 			}
-			System.out.println("]");
+			//System.out.println("]");
 		}
 	}
 	
