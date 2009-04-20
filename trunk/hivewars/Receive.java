@@ -118,20 +118,34 @@ public class Receive implements Runnable{
 		//add all new attacks from the newGS into master and viewable game states
 		int numAttacks = newGS.attacks.size();
 		GameController.ViewableGS.getSemaphore();
-		int maxFiring = 0;
+		int maxOpponentFiring = 0;
+		int maxOwnFiring = 0;
 		for(int i = 0; i < numAttacks; i++){
 			Attack attack = newGS.attacks.get(i);
-			if(attack.firingTime > GameController.prevOpponentAttackTime){
-				if(attack.firingTime > maxFiring  && attack.player != GameController.Me){
-					maxFiring = attack.firingTime;
+			
+			if(attack.player == GameController.Me){
+				if(attack.firingTime > GameController.prevOwnAttackTime){
+					if(attack.firingTime > maxOwnFiring){
+						maxOwnFiring = attack.firingTime;
+					}
+					GameController.MasterGS.addAttack(attack);
+					GameController.ViewableGS.addAttack(attack);
+				}				
+			}else{	
+				if(attack.firingTime > GameController.prevOpponentAttackTime){
+					if(attack.firingTime > maxOpponentFiring){
+						maxOpponentFiring = attack.firingTime;
+					}
+					GameController.MasterGS.addAttack(attack);
+					GameController.ViewableGS.addAttack(attack);
 				}
-				//System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
-				GameController.MasterGS.addAttack(attack);
-				GameController.ViewableGS.addAttack(attack);
 			}
 		}
-		if (maxFiring > GameController.prevOpponentAttackTime){			
-			GameController.prevOpponentAttackTime = maxFiring;
+		if (maxOwnFiring > GameController.prevOwnAttackTime){			
+			GameController.prevOwnAttackTime = maxOwnFiring;
+		}
+		if (maxOpponentFiring > GameController.prevOpponentAttackTime){			
+			GameController.prevOpponentAttackTime = maxOpponentFiring;
 		}
 		GameController.ViewableGS.releaseSemaphore();
 		GameController.MasterGS.releaseSemaphore();

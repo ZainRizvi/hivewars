@@ -46,6 +46,7 @@ public class GameController implements GameSettings{
 	static boolean StopAttacks = false; //stop attacks before finishing game
 	static int LastHit = 0;
 	static int prevOpponentAttackTime = 0; //the opponent's state number when he last attacked
+	static int prevOwnAttackTime = 0;
 	//who am I: PlayerA, PlayerB, Neutral
 	static GameSettings.Control Me = GameSettings.Control.Neutral;
 	public static Control Winner;  //game winner
