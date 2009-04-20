@@ -30,9 +30,17 @@ public class GameStateData implements Serializable{
 	}
 
 	
-	public String GameStateData(){
+	public String toString(){
 		String s = new String();
-		s += "Att#=" + attacks.size();
+		s += "{H\n";
+		for (int i = 0; i < hives.size(); i ++){
+			s += hives.get(i) + "\n";
+		}
+		s+= "A\n";
+		for (int i = 0; i < attacks.size(); i ++){
+			s+= attacks.get(i) + "\n";
+		}
+		
 		return s;
 	}
 }

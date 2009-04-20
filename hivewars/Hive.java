@@ -44,6 +44,14 @@ public class Hive implements Serializable{
 		//spawnTime = (current state num) + spawnRate; 
 	}
 	
+	public String toString(){
+		String s = new String();
+		
+		s+= id + ":" + numMinions;
+		
+		return s;
+	}
+	
 
 
 }
