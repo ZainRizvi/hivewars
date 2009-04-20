@@ -17,71 +17,44 @@ public class Clock implements Runnable{
 		this.run();
 	}
     public void run() {
-    	try {
-    		
+    	try {    		
     		// Need to lag?
     		if (GameController.MasterGS.readGameState().gameStateNum + 10 
     				<= GameController.ViewableGS.readGameState().gameStateNum){
-    			//System.out.println("lag");
     			transmitCurrentViewable();
     			return;
-    		}
+    		}    		
     		
-    		
-			createNewViewableGameState();
-			
-			//  Update Master Game State to either the remote game state or viewable game state,
-			//    whichever is lower
-			
-			/*
-			GameController.MasterGS.getSemaphore();
-			if (GameController.lastRemoteClock > GameController.MasterGS.readGameState().gameStateNum){
-				GameController.MasterGS.fastForward(GameController.ViewableGS.readGameState().gameStateNum);
-			}
-			GameController.MasterGS.releaseSemaphore();
-			*/
-			
+			createNewViewableGameState();			
 	    	transmitCurrentViewable();
 	    	
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		//if(GameController.LastHit > GameController.ViewableGS.readGameState().gameStateNum){
-			//if(GameController.MasterGS.readGameState().attacks.size() <= 0){
-		//		//System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
-		//		GameController.GameFinished = true;
-			//}
-		//}
     }
     
-    public static void createNewViewableGameState() throws InterruptedException{
-    	//System.out.println("createNewViewableGameState");
-    	
-    	Attack currentAttack = GameController.readCurrentAttack();
-    	
+    public static void createNewViewableGameState() throws InterruptedException{        	
     	GameController.ViewableGS.getSemaphore();
-    	
-    	if(!GameController.StopAttacks){
-	    	if(currentAttack != null){
-	    		GameController.ViewableGS.addAttack(currentAttack); 
-	
-				//System.out.println("Clock reads attack: " + currentAttack);
-	    		GameController.writeCurrentAttack(null);  //reset current attack variable
-	    	}
-    	} else {
-    		//System.out.println("Didn't register the attack");
+    	Attack currentAttack = GameController.readCurrentAttack(); 
+    	if(currentAttack != null){
+    		GameController.ViewableGS.addAttack(currentAttack);
+    		GameController.writeCurrentAttack(null);  //reset current attack variable
     	}
     	
     	//determine which attacking minions have reached their target, 
     	//		modify hive status as appropriate, and remove those attacks 
-    	//		from Viewable GameState
+    	//		from Viewable GameState   	
     	int currentState = GameController.ViewableGS.readGameState().gameStateNum;
     	GameController.ViewableGS.fastForward(currentState + 1);
     	
-    	GameController.ViewableGS.releaseSemaphore();
+    	GameController.ViewableGS.releaseSemaphore();  	
+    	determineIfGameOver();   	
+    }
+    
+    public static void determineIfGameOver(){
+    	GameController.ViewableGS.getSemaphore();
+    	GameController.MasterGS.getSemaphore();
     	
-    	//TODO: see if one player controls all bases => game is over!
     	HashMap<Integer,Hive> hives = GameController.ViewableGS.readGameState().hives;
     	int playerATerr = 0;
     	int playerBTerr = 0;
@@ -91,8 +64,7 @@ public class Clock implements Runnable{
     		} else if (hives.get(i).controllingPlayer ==  Control.PlayerB){
     			playerBTerr++;
     		}
-    	}
-    	
+    	}    	
     	
     	Control leader = Control.Neutral;
     	if((playerATerr == 0) || (playerBTerr == 0)){
@@ -120,26 +92,13 @@ public class Clock implements Runnable{
 	    		GameController.GameFinished = gameOver;
     		}
     	}
-    	////System.out.println(GameController.MasterGS.readGameState());
-    	
+    	GameController.ViewableGS.releaseSemaphore();
+    	GameController.MasterGS.releaseSemaphore();    	
     }
     
+    
     public static void transmitCurrentViewable(){
-    	String player = new String();
-    	//if(GameController.Me == Control.PlayerA){
-    	//	player += "A";
-    	//} else {
-    	//	player += "B";
-    	//}
-    	////System.out.print(player + ">" + GameController.ViewableGS.readGameState().gameStateNum +
-    	//		"," + GameController.ViewableGS.readGameState().attacks.size() + "atks" + '\t');    	
-    //	//System.out.println(player + " sending game state " + GameController.ViewableGS.readGameState().gameStateNum +
-    //			" Num attacks = " + GameController.ViewableGS.readGameState().attacks.size());
-    	
     	GameController.ViewableGS.getSemaphore();
-    	GameStateData vgs = GameController.ViewableGS.readGameState();
-		//System.out.println("TX: " + vgs.gameStateNum + ",a" + vgs.attacks.size() );    	
-    	////System.out.println("TX: " + GameController.ViewableGS.readGameState().gameStateNum);
     	GameController.socket.sendMessage(
     			GameController.ViewableGS.readGameState(), 
     			GameController.remoteInetAddr, 
