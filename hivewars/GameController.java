@@ -78,7 +78,13 @@ public class GameController implements GameSettings{
 		}
 		System.out.println("Gui initialized");
 		
-		while(Me == Control.Neutral){}; //player hasn't chosen to host or join yet
+		while(Me == Control.Neutral){
+			//player hasn't chosen to host or join yet
+			Thread.currentThread();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {e.printStackTrace();}
+		}; 
 		if(Me == Control.PlayerB){
 			// Start playing. when player A will start when he receives player B's first state  
 			GameStarted = true; 
