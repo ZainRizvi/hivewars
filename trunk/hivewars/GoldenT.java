@@ -64,7 +64,9 @@ public class GoldenT extends Game {
 	//constructor
 	public GoldenT() {
 		//read initial Viewable game state
+		GameController.ViewableGS.getSemaphore();
 		currentGS = GameController.ViewableGS.readGameState();
+		GameController.ViewableGS.releaseSemaphore();
 		NUMBER_OF_HIVES = currentGS.hives.size();
     	click = 0;
     	userError = 0;
