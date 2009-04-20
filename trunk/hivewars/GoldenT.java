@@ -35,7 +35,7 @@ public class GoldenT extends Game {
 
 	final int NUMBER_OF_HIVES;
 	SystemFont sf, label, err, ann, title;
-	BufferedImage[] attck;
+	BufferedImage[] attck, expld;
 	//current gs, read from GameController.ViewableGS
 	GameStateData currentGS;
 	int oldGameStateNum;
@@ -47,9 +47,9 @@ public class GoldenT extends Game {
 	int selectedHive, sourceHive, destHive;
 	int mode;
 	//sprites
-	VolatileSprite explosion;
+	ArrayList<VolatileSprite> explosions;
 	ArrayList<AnimatedSprite> hives, attacks;
-	SpriteGroup Hives, Attacks;
+	SpriteGroup Hives, Attacks, Explosions;
 	//colisions
 	CollisionBounds outOfBounds;
 	CollisionGroup attackToHive;
@@ -66,11 +66,24 @@ public class GoldenT extends Game {
 		//read initial Viewable game state
 		currentGS = GameController.ViewableGS.readGameState();
 		NUMBER_OF_HIVES = currentGS.hives.size();
-    	mode = 0;
     	click = 0;
     	userError = 0;
     	oldGameStateNum = -1;
     	selectedHive = -1;
+    	//determine starting mode
+		System.out.println("gui: " + GameController.Option + " " + GameController.arg0 + " " + GameController.arg1);
+
+    	if(GameController.Option.equals("-m")){
+    		mode = 0;
+    	} else if (GameController.Option.equals("-w")){
+    		mode = 1;
+    	} else if (GameController.Option.equals("-c")){
+    		connect(GameController.arg0, GameController.arg1);
+    	} else {
+    		mode = 0;
+    	}
+    	System.out.println("mode: " + mode);
+    	
 	}
 	
 	
@@ -159,10 +172,22 @@ public class GoldenT extends Game {
     	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
     	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
     	BufferedImage sob = getImage("greenBall.png", true);
+    	c = new Color(255,255,255);
+    	setMaskColor(c);
+    	BufferedImage be0 = getImage("BubbleExplode0.gif", true);
+    	BufferedImage be1 = getImage("BubbleExplode1.gif", true);
+     	BufferedImage be2 = getImage("BubbleExplode2.gif", true);
+     	BufferedImage be3 = getImage("BubbleExplode3.gif", true);
+    	BufferedImage be4 = getImage("BubbleExplode4.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
     	attck[0] = sob;
-    	
+    	expld = new BufferedImage[5];
+    	expld[0] = be0;
+    	expld[1] = be1;
+    	expld[2] = be2;
+    	expld[3] = be3;
+    	expld[4] = be4;
     	ColorModel cm = sob.getColorModel();
     	int pixel = sob.getRGB(0, 0);
     	System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
@@ -207,15 +232,20 @@ public class GoldenT extends Game {
     	attacks = new ArrayList<AnimatedSprite>();
     	Attacks = new SpriteGroup("Attacks");
     	
+    	explosions = new ArrayList<VolatileSprite>();
+    	Explosions = new SpriteGroup("Explosions");
+    	
     	//add groups to playfield
+
     	playfield.addGroup(Hives);
     	playfield.addGroup(Attacks);
+    	playfield.addGroup(Explosions);
 
     	//set up collisions
     	outOfBounds = new OutOfBoundsCollision(bg);
     	outOfBounds.setBoundary(0, 0, 800, 600);
     	outOfBounds.setCollisionGroup(Attacks, Attacks);
-    	attackToHive = new AttackToHiveCollision();
+    	attackToHive = new AttackToHiveCollision(this);
     	attackToHive.setCollisionGroup(Attacks, Hives);
     	
     	GameController.init.release();
@@ -251,7 +281,10 @@ public class GoldenT extends Game {
 		String p2 = new String();
 		String p3 = new String();
 		//check for valid input
-		if(ip.length() == 0 && port.length() == 0){
+		if(ip == null || port == null){
+			userError = 1;
+			mode = 3;
+		} else if(ip.length() == 0 && port.length() == 0){
 			userError = 1;		//please enter an ip address and a port number
 		} else if(ip.length() == 0){
 			userError = 2;		//please enter an ip address
@@ -409,6 +442,13 @@ public class GoldenT extends Game {
 		    		attacks.get(attacks.size() - 1).setActive(false);
 		    		attacks.remove(attacks.size() - 1);
 		    		Attacks.removeInactiveSprites();
+		    		Explosions.removeInactiveSprites();
+		    		for(int k = 0; k < Explosions.getSize(); k++){
+		    		    int size = explosions.size();
+		    		    if(size > 0){
+			    			explosions.remove(explosions.size() - 1);
+		    		    }
+		    		}
 		    	}
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
@@ -438,6 +478,7 @@ public class GoldenT extends Game {
 		    	
 		    	//check boundary collisions
 		    	//outOfBounds.checkCollision();
+		    	attackToHive.checkCollision();
 		    	
 	    	}
 	    	

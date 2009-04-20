@@ -11,7 +11,11 @@ public class Receive implements Runnable{
 	InetAddress localInetAddr;
 	
 	public Receive() {
-		GameController.socket = new UDPSocket();
+		if(GameController.Option.equals("-w") && GameController.arg0 != null){
+			GameController.socket = new UDPSocket(Integer.parseInt(GameController.arg0));
+		} else {
+			GameController.socket = new UDPSocket();
+		}
 		localPort = GameController.socket.getLocalPort();
 		try {
 			localInetAddr = InetAddress.getByName(InetAddress.getLocalHost().getHostName());

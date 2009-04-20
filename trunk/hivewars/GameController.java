@@ -52,8 +52,17 @@ public class GameController implements GameSettings{
 	
 	static Semaphore init = new Semaphore(1, true);
 	
+	/* <-m> : go to menu 
+	 * <-w [port]> : wait on "port" (optional) ... 
+	 * <-c ip port> : connect to "ip" on "port"
+	 */
+	
+	static String Option = null;
+	static String arg0 = null;
+	static String arg1 = null;
+	
 	public static void main(String[] args) {
-        //initialize reconcile
+		//initialize reconcile
 		//initialize everything
 		ViewableGS = new GameStateController();
 		new Map();
@@ -65,10 +74,15 @@ public class GameController implements GameSettings{
 		MasterGS = new GameStateController();
 		MasterGS.updateGameState(ViewableGS.readGameState());
 		
+		if(args.length > 0)	Option = new String(args[0]);
+		if(args.length > 1) arg0 = new String(args[1]);
+		if(args.length > 2) arg1 = new String(args[2]);
+		
 		// Initialize game state receiver thread.  Game starts for player A when 
 		//   he receives the first communication.
 		new Receive();
-			
+		
+		//System.out.println(Option + " " + arg0 + " " + arg1);
 		//start Gui
 		new Gui();
 		try {
@@ -83,7 +97,7 @@ public class GameController implements GameSettings{
 			//player hasn't chosen to host or join yet
 			Thread.currentThread();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}; 
 		if(Me == Control.PlayerB){
