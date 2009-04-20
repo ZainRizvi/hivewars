@@ -44,6 +44,7 @@ public class GameController implements GameSettings{
 	static boolean GameStarted = false;
 	static boolean GameFinished = false;
 	static boolean StopAttacks = false; //stop attacks before finishing game
+	static boolean Lagging = false;
 	static int LastHit = 0;
 	static int prevOpponentAttackTime = 0; //the opponent's state number when he last attacked
 	static int prevOwnAttackTime = 0;
@@ -94,22 +95,27 @@ public class GameController implements GameSettings{
 		}
 		//System.out.println("Gui initialized");
 		
-		while(Me == Control.Neutral){
-			//player hasn't chosen to host or join yet
-			Thread.currentThread();
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {e.printStackTrace();}
-		}; 
-		
-		while(!GameFinished){
-			//call clock every 100ms
-			new Clock();
-			Thread.currentThread();
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {e.printStackTrace();}
-		}		
+		while(true){
+			
+			while(Me == Control.Neutral){
+				//player hasn't chosen to host or join yet
+				Thread.currentThread();
+				try {
+					Thread.sleep(200);
+				} catch (InterruptedException e) {e.printStackTrace();}
+			}; 
+			
+			while(!GameFinished){
+				//call clock every 100ms
+				new Clock();
+				Thread.currentThread();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {e.printStackTrace();}
+			}	
+			
+			//TODO enter code for new game button
+		}
 	}
 	
 	public static void writeCurrentAttack(Attack newAttack) throws InterruptedException{
