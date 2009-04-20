@@ -49,6 +49,8 @@ public class GameController implements GameSettings{
 	static GameSettings.Control Me = GameSettings.Control.Neutral;
 	public static Control Winner;  //game winner
 	
+	static Semaphore init = new Semaphore(1, true);
+	
 	public static void main(String[] args) {
         //initialize reconcile
 		//initialize everything
@@ -68,6 +70,13 @@ public class GameController implements GameSettings{
 			
 		//start Gui
 		new Gui();
+		try {
+			init.acquire();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println("Gui initialized");
 		
 		while(Me == Control.Neutral){}; //player hasn't chosen to host or join yet
 		if(Me == Control.PlayerB){
@@ -96,17 +105,18 @@ public class GameController implements GameSettings{
 	public static void writeCurrentAttack(Attack newAttack) throws InterruptedException{
 		if(newAttack != null){
 			double hyp;
-			int xv, yv, xdist, ydist;
-			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x;
-			int destX = Map.hives.get(newAttack.destHiveNum).x;
-			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y;
-			int destY = Map.hives.get(newAttack.destHiveNum).y;
+			double xv, yv;
+			double xdist, ydist;
+			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x - 25;
+			int destX = Map.hives.get(newAttack.destHiveNum).x - 25;
+			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y - 25;
+			int destY = Map.hives.get(newAttack.destHiveNum).y - 25;
 			//calculate hitTime
 			xdist = destX - sourceX;
 			ydist = destY - sourceY;
-			hyp =  Math.sqrt(xdist*xdist + ydist*ydist);
-			xv = (int) ((xdist / hyp) * GameSettings.ATTACK_SPEED);
-			yv = (int) ((ydist / hyp) * GameSettings.ATTACK_SPEED);
+			hyp = Math.round(Math.sqrt(xdist*xdist + ydist*ydist));
+			xv = ((xdist / hyp) * GameSettings.ATTACK_SPEED);
+			yv = ((ydist / hyp) * GameSettings.ATTACK_SPEED);
 			//System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
 			if(xv == 0){
 				newAttack.hitTime = (short) (newAttack.firingTime + ydist / yv);

@@ -187,7 +187,7 @@ public class GoldenT extends Game {
     		int x = currentGS.hives.get(k).x;
     		int y = currentGS.hives.get(k).y;
     		//create sprite
-    		hives.add(new AnimatedSprite(h, x, y));
+    		hives.add(new AnimatedSprite(h, x - 41, y - 41));
     		//set initial color
     		if(currentGS.hives.get(k).startingPlayer == GameSettings.Control.PlayerA) {
     			hives.get(k).setAnimationFrame(0, 2);
@@ -198,8 +198,7 @@ public class GoldenT extends Game {
     		}
     		//set initial minion number
     		c = new Color(255, 160, 39);
-    		MinionNumber mn = new MinionNumber(Color.WHITE, currentGS.hives.get(k).startingMinions, 
-    				x + hives.get(k).getWidth() / 2, y + hives.get(k).getWidth() / 2);
+    		MinionNumber mn = new MinionNumber(Color.WHITE, currentGS.hives.get(k).startingMinions, x, y);
     		minionNumbers.add(k, mn);
     		Hives.add(hives.get(k));
     	}
@@ -219,21 +218,24 @@ public class GoldenT extends Game {
     	attackToHive = new AttackToHiveCollision();
     	attackToHive.setCollisionGroup(Attacks, Hives);
     	
+    	GameController.init.release();
     }
 	
 	
     //this function determines the x and y velocity it takes to get to a destination x and y at a specified speed
 	//inputs: current x and y, destination x and y, and velocity
 	//output: an array of doubles {x velocity, y velocity}
-	private int[] getSpeedTo(int xOld, int yOld ,int xNew, int yNew){
-		double hyp;
-		int xv, yv, xdist, ydist;
-		int ret[] = {0, 0};
+	private double[] getSpeedTo(int xOld, int yOld ,int xNew, int yNew){
+		double hyp, xv, yv;
+		int xdist, ydist;
+		double ret[] = {0, 0};
 		xdist = xNew - xOld;
 		ydist = yNew - yOld;
 		hyp =  Math.sqrt(xdist*xdist + ydist*ydist);
-		xv = (int) ((xdist / hyp) * GameSettings.ATTACK_SPEED);
-		yv = (int) ((ydist / hyp) * GameSettings.ATTACK_SPEED);
+		//xv = (int) ((xdist / hyp) * GameSettings.ATTACK_SPEED);
+		//yv = (int) ((ydist / hyp) * GameSettings.ATTACK_SPEED);
+		xv = (xdist * GameSettings.ATTACK_SPEED / hyp);
+		yv = (ydist * GameSettings.ATTACK_SPEED / hyp);
 		ret[0] = xv;
 		ret[1] = yv;
 		return ret;
@@ -377,7 +379,12 @@ public class GoldenT extends Game {
     		//System.out.println(GameController.GameStarted);
 	    	//update currentGS from ViewableGS
 	    	currentGS = GameController.ViewableGS.readGameState();
-	    	if(currentGS.gameStateNum != oldGameStateNum){
+	    	if(currentGS.gameStateNum == oldGameStateNum){
+				Thread.currentThread();
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {e.printStackTrace();}
+	    	} else {
 		    	//update hives
 		    	for(int k = 0; k < hives.size(); k ++){
 		    		//update minion number
@@ -411,25 +418,26 @@ public class GoldenT extends Game {
 		    		attacks.add(a);
 		    		Attacks.add(a);
 		    	}
+		    	//change attack locations on the screen
 		    	for(int k = 0; k < attacks.size(); k ++) {
 		    		int sourceX = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).x;
 		    		int sourceY = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).y;
-		    		int[] v = getSpeedTo(sourceX, sourceY, currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).x,
-		    				currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).y);
+		    		int destX = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).x;
+		    		int destY = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).y;
+		    		double[] v = getSpeedTo(sourceX, sourceY, destX, destY);
 		    		//x = sourceHive.x + traveledDistance
 		    		//or x = sourceHive.x + (currentTime - firingTime) * xSpeed
-		    		int x = (currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).x + hives.get(currentGS.attacks.get(k).sourceHiveNum).getWidth() / 2) + 
-		    		(currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[0];
-		    		int y = (currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).y + hives.get(currentGS.attacks.get(k).sourceHiveNum).getWidth() / 2) + 
-		    		(currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[1];
+		    		double x = sourceX + (currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[0];
+		    		double y = sourceY + (currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[1];
 		    		attacks.get(k).forceX(x);
 		    		attacks.get(k).forceY(y);
-		    		//System.out.println(" k" + k + " x and y: " + x + " " + y);
+		    		//System.out.println("sourceX,Y: " + sourceX + "," + sourceY + " destX,Y: " + destX + "," + destY +
+		    			//	" xv,yv: " + v[0] + "," + v[1] + " currX,Y: " + x + "," + y);
 		    		//*set animations*
 		    	}
 		    	
 		    	//check boundary collisions
-		    	outOfBounds.checkCollision();
+		    	//outOfBounds.checkCollision();
 		    	
 	    	}
 	    	

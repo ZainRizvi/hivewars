@@ -16,7 +16,7 @@ interface GameSettings {
 		PlayerA, PlayerB, Neutral
 	}
 	
-	static final int ATTACK_SPEED = 12;  //five seconds to go from one side of the screen to the other
+	static final int ATTACK_SPEED = 3;  //five seconds to go from one side of the screen to the other
 	
 	// Default values for hives
 	static final Control DefaultControler = GameSettings.Control.Neutral;
