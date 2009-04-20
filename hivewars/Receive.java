@@ -118,19 +118,21 @@ public class Receive implements Runnable{
 		//add all new attacks from the newGS into master and viewable game states
 		int numAttacks = newGS.attacks.size();
 		GameController.ViewableGS.getSemaphore();
-		int firingTime = 0;
+		int maxFiring = 0;
 		for(int i = 0; i < numAttacks; i++){
 			Attack attack = newGS.attacks.get(i);
 			if(attack.firingTime > GameController.prevOpponentAttackTime){
-				if(attack.firingTime > firingTime){
-					firingTime = attack.firingTime;
+				if(attack.firingTime > maxFiring){
+					maxFiring = attack.firingTime;
 				}
 				System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
 				GameController.MasterGS.addAttack(attack);
 				GameController.ViewableGS.addAttack(attack);
 			}
 		}
-		GameController.prevOpponentAttackTime = firingTime;
+		if (maxFiring > GameController.prevOpponentAttackTime){			
+			GameController.prevOpponentAttackTime = maxFiring;
+		}
 		GameController.ViewableGS.releaseSemaphore();
 		GameController.MasterGS.releaseSemaphore();
 	}	
