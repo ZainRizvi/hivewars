@@ -39,7 +39,7 @@ public class GameStateController {
 			return;
 		}
 		
-		if(hive.numMinions>0){
+		if(hive.numMinions>1){
 			boolean attackExists = false;
 			for(int i = 0; i < gameState.attacks.size(); i ++){
 				Attack existingattack = gameState.attacks.get(i);				
@@ -106,6 +106,9 @@ public class GameStateController {
 			HashMap<Integer, Hive> hives = gameState.hives;
 			for (int i = 0; i < hives.size(); i ++){
 				Hive hive = hives.get(i);
+				if (hive.controllingPlayer == Control.Neutral){
+					continue;
+				}
 				hive.nextSpawnTime--;
 				if (hive.nextSpawnTime <= 0){
 					hive.nextSpawnTime = hive.spawnRate;
