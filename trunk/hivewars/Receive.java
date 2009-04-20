@@ -101,9 +101,12 @@ public class Receive implements Runnable{
 		GameController.ViewableGS.getSemaphore();
 		for(int i = 0; i < numAttacks; i++){
 			Attack attack = newGS.attacks.get(i);
-			System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
-			GameController.MasterGS.addAttack(attack);
-			GameController.ViewableGS.addAttack(attack);
+			if(attack.firingTime > GameController.prevOpponentAttackTime){	
+				GameController.prevOpponentAttackTime = attack.firingTime;
+				System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
+				GameController.MasterGS.addAttack(attack);
+				GameController.ViewableGS.addAttack(attack);
+			}
 		}
 		GameController.ViewableGS.releaseSemaphore();
 		GameController.MasterGS.releaseSemaphore();
