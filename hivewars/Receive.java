@@ -17,8 +17,9 @@ public class Receive implements Runnable{
 			} else {
 				GameController.socket = new UDPSocket();
 			}
-		}else{
-			GameController.socket = new UDPSocket();			
+		} else {
+			GameController.socket = new UDPSocket();
+
 		}
 		localPort = GameController.socket.getLocalPort();
 		try {

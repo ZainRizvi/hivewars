@@ -35,7 +35,7 @@ public class GoldenT extends Game {
 
 	final int NUMBER_OF_HIVES;
 	SystemFont sf, label, err, ann, title;
-	BufferedImage[] attck, expld;
+	BufferedImage[] attck, expld, fireBall;
 	//current gs, read from GameController.ViewableGS
 	GameStateData currentGS;
 	int oldGameStateNum;
@@ -49,7 +49,7 @@ public class GoldenT extends Game {
 	//sprites
 	ArrayList<VolatileSprite> explosions;
 	ArrayList<AnimatedSprite> hives, attacks;
-	SpriteGroup Hives, Attacks, Explosions;
+	SpriteGroup Hives, Attacks, Explosions, BigExplosions;
 	//colisions
 	CollisionBounds outOfBounds;
 	CollisionGroup attackToHive;
@@ -72,16 +72,19 @@ public class GoldenT extends Game {
     	selectedHive = -1;
     	//determine starting mode
 		System.out.println("gui: " + GameController.Option + " " + GameController.arg0 + " " + GameController.arg1);
-
-    	if(GameController.Option.equals("-m")){
-    		mode = 0;
-    	} else if (GameController.Option.equals("-w")){
-    		mode = 1;
-    	} else if (GameController.Option.equals("-c")){
-    		connect(GameController.arg0, GameController.arg1);
-    	} else {
-    		mode = 0;
-    	}
+		if(GameController.Option != null){
+	    	if(GameController.Option.equals("-m")){
+	    		mode = 0;
+	    	} else if (GameController.Option.equals("-w")){
+	    		mode = 1;
+	    	} else if (GameController.Option.equals("-c")){
+	    		connect(GameController.arg0, GameController.arg1);
+	    	} else {
+	    		mode = 0;
+	    	}
+		} else {
+			mode = 0;
+		}
     	System.out.println("mode: " + mode);
     	
 	}
@@ -179,6 +182,10 @@ public class GoldenT extends Game {
      	BufferedImage be2 = getImage("BubbleExplode2.gif", true);
      	BufferedImage be3 = getImage("BubbleExplode3.gif", true);
     	BufferedImage be4 = getImage("BubbleExplode4.gif", true);
+    	BufferedImage fb1 = getImage("FireBall0.gif", true);
+    	BufferedImage fb2 = getImage("FireBall1.gif", true);
+    	BufferedImage fb3 = getImage("FireBall2.gif", true);
+    	BufferedImage fb4 = getImage("FireBall3.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[1];
     	attck[0] = sob;
@@ -188,6 +195,11 @@ public class GoldenT extends Game {
     	expld[2] = be2;
     	expld[3] = be3;
     	expld[4] = be4;
+        fireBall = new BufferedImage[4];
+        fireBall[0] = fb1;
+        fireBall[1] = fb2;
+        fireBall[2] = fb3;
+        fireBall[3] = fb4;
     	ColorModel cm = sob.getColorModel();
     	int pixel = sob.getRGB(0, 0);
     	System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
@@ -235,11 +247,14 @@ public class GoldenT extends Game {
     	explosions = new ArrayList<VolatileSprite>();
     	Explosions = new SpriteGroup("Explosions");
     	
+    	BigExplosions = new SpriteGroup("BigExplosions");
+    	
     	//add groups to playfield
 
     	playfield.addGroup(Hives);
     	playfield.addGroup(Attacks);
     	playfield.addGroup(Explosions);
+    	playfield.addGroup(BigExplosions);
 
     	//set up collisions
     	outOfBounds = new OutOfBoundsCollision(bg);
@@ -419,6 +434,7 @@ public class GoldenT extends Game {
 				} catch (InterruptedException e) {e.printStackTrace();}
 	    	} else {
 		    	//update hives
+	    		BigExplosions.removeInactiveSprites();
 		    	for(int k = 0; k < hives.size(); k ++){
 		    		//update minion number
 		    		minionNumbers.get(k).setNumber(currentGS.hives.get(k).numMinions);
@@ -429,6 +445,13 @@ public class GoldenT extends Game {
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerB) {
 		    			hives.get(k).setAnimationFrame(1, 2);
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.Neutral) {
+		    			if(hives.get(k).getFrame() != 2){
+		    				Timer t = new Timer(100);
+		    				VolatileSprite v = new VolatileSprite(fireBall, hives.get(k).getX() - 112, 
+		    						hives.get(k).getY() - 112);
+		    				v.setAnimationTimer(t);
+		    				BigExplosions.add(v);
+		    			}
 		    			hives.get(k).setAnimationFrame(2, 2);
 		    		}
 		    		if(hives.get(k).getStartAnimationFrame() != startFrame) {
@@ -478,7 +501,7 @@ public class GoldenT extends Game {
 		    	
 		    	//check boundary collisions
 		    	//outOfBounds.checkCollision();
-		    	attackToHive.checkCollision();
+		    	//attackToHive.checkCollision();
 		    	
 	    	}
 	    	
