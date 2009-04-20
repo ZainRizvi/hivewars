@@ -117,7 +117,9 @@ public class GameStateController {
 					if (attack.hitTime <= gameState.gameStateNum){
 						Hive hive = hives.get(attack.destHiveNum);
 						if (attack.player == hive.controllingPlayer){
-							hive.numMinions++;
+							if(hive.numMinions < hive.hiveCapacity){
+								hive.numMinions++;
+							}
 						}else {
 							hive.numMinions--;
 							if(hive.numMinions == 0){

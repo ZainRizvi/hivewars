@@ -37,7 +37,13 @@ public class Clock implements Runnable{
     	try {    		
     		// Need to lag?
     		//create new game state unless viewable is more than 10 states ahead of the master
-    		if (masterGameStateNum + 10 > viewableGameStateNum) createNewViewableGameState();			
+    		if (masterGameStateNum + 10 > viewableGameStateNum) {
+    			GameController.Lagging = false;
+    			createNewViewableGameState();	
+    		}
+    		else {
+    			GameController.Lagging = true;
+    		}
     		GameController.ViewableGS.releaseSemaphoreForWritng();
     		transmitCurrentViewable();
 		} catch (InterruptedException e) {

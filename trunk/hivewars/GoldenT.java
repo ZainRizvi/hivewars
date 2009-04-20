@@ -40,7 +40,7 @@ public class GoldenT extends Game {
 	GameStateData currentGS;
 	int oldGameStateNum;
 	PlayField playfield;
-	Background bg;
+	Background planetlogo, planet, supernova;
 	Color c;
 	ArrayList<MinionNumber> minionNumbers;
 	int click1, click2;
@@ -97,7 +97,7 @@ public class GoldenT extends Game {
 	
 	
 	//toggles flash screen, gtge logo in top right of screen, and fps in bottom left
-	{ distribute = false; }
+	{ distribute = true; }
 
 	
 	
@@ -167,9 +167,11 @@ public class GoldenT extends Game {
 		frame.add(cancelConnectButton);
     	
     	//make background
-    	bg = new ImageBackground(getImage("SuperNova.jpg"),1024,768);
+    	planetlogo = new ImageBackground(getImage("PlanetSmallerLogo.jpg"),800,600);
+    	planet = new ImageBackground(getImage("PlanetSmaller.jpg"),800,600);
+    	supernova = new ImageBackground(getImage("SuperNova.jpg"),1024,768);
     	//initialize playfield
-    	playfield = new PlayField(bg);
+    	playfield = new PlayField(planetlogo);
     	
     	//set Mask color
     	c = new Color(254,255,252);
@@ -266,7 +268,7 @@ public class GoldenT extends Game {
     	playfield.addGroup(BigExplosions);
 
     	//set up collisions
-    	outOfBounds = new OutOfBoundsCollision(bg);
+    	outOfBounds = new OutOfBoundsCollision(supernova);
     	outOfBounds.setBoundary(0, 0, 800, 600);
     	outOfBounds.setCollisionGroup(Attacks, Attacks);
     	attackToHive = new AttackToHiveCollision(this);
@@ -348,6 +350,7 @@ public class GoldenT extends Game {
 				e.printStackTrace();
 			}
 			GameController.Me = GameSettings.Control.PlayerB;
+			sourceHive = 9;
 			mode = 5;
 			userError = 0;
 		}
@@ -363,6 +366,7 @@ public class GoldenT extends Game {
     	int startFrame;
 
     	if(mode == -2){
+    		playfield.setBackground(planetlogo);
     		cancelWaitButton.setEnabled(false);
     		cancelWaitButton.setVisible(false);
     		waitButton.setEnabled(true);
@@ -372,6 +376,7 @@ public class GoldenT extends Game {
     		frame.update();
     		mode = 0;
     	} else if(mode == -1){
+    		playfield.setBackground(planetlogo);
     		waitButton.setEnabled(true);
     		waitButton.setVisible(true);
     		connectToButton.setEnabled(true);
@@ -389,6 +394,7 @@ public class GoldenT extends Game {
     	} else if(mode == 0){
         	frame.update();
     	} else if(mode == 1) {
+    		playfield.setBackground(planet);
     		waitButton.setEnabled(false);
     		waitButton.setVisible(false);
     		connectToButton.setEnabled(false);
@@ -400,10 +406,12 @@ public class GoldenT extends Game {
     	} else if(mode == 2){
     		if(GameController.GameStarted){
     			GameController.Me = GameSettings.Control.PlayerA;
+    			sourceHive = 0;
     			mode = 5;
     		}
         	frame.update();
     	} else if(mode == 3) {
+    		playfield.setBackground(planet);
     		waitButton.setEnabled(false);
     		waitButton.setVisible(false);
     		connectToButton.setEnabled(false);
@@ -421,6 +429,7 @@ public class GoldenT extends Game {
     	} else if (mode == 4){
         	frame.update();
     	} else if (mode == 5){
+    		playfield.setBackground(supernova);
 			cancelWaitButton.dispose();
 			waitButton.dispose();
 			connectToButton.dispose();
@@ -622,10 +631,11 @@ public class GoldenT extends Game {
     	playfield.render(g);
     	if(mode == 0){
     		//display hive wars
-    		title.drawString(g, "HiveWars", 400 - title.getWidth("HiveWars") / 2, 200 - title.getHeight());
+    		//title.drawString(g, "HiveWars", 400 - title.getWidth("HiveWars") / 2, 200 - title.getHeight());
         	frame.render(g);
     	} else if(mode == 2){
     		//display waiting
+    		ann.setColor(Color.CYAN);
     		ann.drawString(g, "Waiting ...", 400 - ann.getWidth("Waiting ...") / 2, 250 - ann.getHeight());
         	ann.drawString(g, "Local Port: " + GameController.localPort, 
         			400 - ann.getWidth("Local Port: " + GameController.localPort) / 2, 350 - ann.getHeight());
@@ -634,6 +644,7 @@ public class GoldenT extends Game {
         			300 - ann.getHeight());
     		frame.render(g);
     	} if(mode == 4){
+    		label.setColor(Color.CYAN);
     		label.drawString(g, "IP: ", 350 - label.getWidth("IP: "), 250);
     		label.drawString(g, "Port: ", 375 - label.getWidth("Port: "), 300);
         	if(userError == 1){
@@ -649,21 +660,46 @@ public class GoldenT extends Game {
         	frame.render(g);
     	} else if(mode == 6){
         	for(int k = 0; k < minionNumbers.size(); k++){
-        		sf.setColor(minionNumbers.get(k).c);
+        		if(currentGS.hives.get(k).numMinions == currentGS.hives.get(k).hiveCapacity){
+        			c = new Color(47, 186, 237);
+        			sf.setColor(c);
+        		} else {
+            		sf.setColor(minionNumbers.get(k).c);
+        		}
             	sf.drawString(g, minionNumbers.get(k).Minions, GameFont.CENTER, minionNumbers.get(k).x, 
             			minionNumbers.get(k).y, sf.getWidth('1') * minionNumbers.get(k).Minions.length());
         	}
+        	if(GameController.Lagging == true){
+        		ann.setColor(Color.YELLOW);
+        		ann.drawString(g, "Lagging ...", 
+        				400 - ann.getWidth("Lagging ...") / 2, 500);
+        	}
     	} else if(mode == 7){
     		InetAddress winner;
-    		c = new Color(186, 241, 0);
+    		c = new Color(42, 23, 122);
     		title.setColor(c);
+    		title.drawString(g, "GameOver", 402 - title.getWidth("GameOver") / 2, 198 - title.getHeight());
+    		title.drawString(g, "GameOver", 398 - title.getWidth("GameOver") / 2, 202 - title.getHeight());
+    		title.drawString(g, "GameOver", 402 - title.getWidth("GameOver") / 2, 202 - title.getHeight());
+    		title.drawString(g, "GameOver", 398 - title.getWidth("GameOver") / 2, 198 - title.getHeight());
+    		title.setColor(Color.WHITE);
     		title.drawString(g, "GameOver", 400 - title.getWidth("GameOver") / 2, 200 - title.getHeight());
     		if(GameController.Winner == GameController.Me){
     			winner = GameController.localInetAddr;
     		} else {
     			winner = GameController.remoteInetAddr;
     		}
+    		c = new Color(43, 23, 142);
     		err.setColor(c);
+    		err.drawString(g, winner.toString() + " wins!", 
+    				401 - err.getWidth(winner.toString() + " wins!") / 2, 199 + 10);
+    		err.drawString(g, winner.toString() + " wins!", 
+    				399 - err.getWidth(winner.toString() + " wins!") / 2, 201 + 10);
+    		err.drawString(g, winner.toString() + " wins!", 
+    				401 - err.getWidth(winner.toString() + " wins!") / 2, 201 + 10);
+    		err.drawString(g, winner.toString() + " wins!", 
+    				399 - err.getWidth(winner.toString() + " wins!") / 2, 199 + 10);
+    		err.setColor(Color.WHITE);
     		err.drawString(g, winner.toString() + " wins!", 
     				400 - err.getWidth(winner.toString() + " wins!") / 2, 200 + 10);
         	frame.render(g);
