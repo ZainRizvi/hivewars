@@ -445,7 +445,7 @@ public class GoldenT extends Game {
 		    		//update hive color
 		    		startFrame = hives.get(k).getStartAnimationFrame();
 		    		if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerA) {
-		    			if(hives.get(k).getFrame() != 1){
+		    			if(hives.get(k).getFrame() != 0){
 		    				if(sourceHive == k) {
 			    				click = 0;
 		    				}
@@ -489,12 +489,6 @@ public class GoldenT extends Game {
 		    	}
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
-		    		a.setAnimate(false);
-		    		if(GameController.Me == GameSettings.Control.PlayerA){
-		    			a.setAnimationFrame(2, 2);
-		    		} else {
-		    			a.setAnimationFrame(1, 1);
-		    		}
 		    		a.setAnimationFrame(0, 0);
 		    		a.setAnimate(false);
 		    		a.setActive(true);
@@ -514,6 +508,11 @@ public class GoldenT extends Game {
 		    		double y = sourceY + (currentGS.gameStateNum - currentGS.attacks.get(k).firingTime) * v[1];
 		    		attacks.get(k).forceX(x);
 		    		attacks.get(k).forceY(y);
+		    		if(currentGS.attacks.get(k).player == GameSettings.Control.PlayerB) {
+		    			attacks.get(k).setAnimationFrame(1, 1);
+		    		} else {
+		    			attacks.get(k).setAnimationFrame(2, 2);
+		    		}
 		    		//System.out.println("sourceX,Y: " + sourceX + "," + sourceY + " destX,Y: " + destX + "," + destY +
 		    			//	" xv,yv: " + v[0] + "," + v[1] + " currX,Y: " + x + "," + y);
 		    		//*set animations*
