@@ -122,7 +122,7 @@ public class Receive implements Runnable{
 		for(int i = 0; i < numAttacks; i++){
 			Attack attack = newGS.attacks.get(i);
 			if(attack.firingTime > GameController.prevOpponentAttackTime){
-				if(attack.firingTime > maxFiring){
+				if(attack.firingTime > maxFiring  && attack.player != GameController.Me){
 					maxFiring = attack.firingTime;
 				}
 				System.out.print("(" + attack.firingTime + "," + oldStateNum + ") ");
