@@ -11,10 +11,14 @@ public class Receive implements Runnable{
 	InetAddress localInetAddr;
 	
 	public Receive() {
-		if(GameController.Option.equals("-w") && GameController.arg0 != null){
-			GameController.socket = new UDPSocket(Integer.parseInt(GameController.arg0));
-		} else {
-			GameController.socket = new UDPSocket();
+		if (GameController.Option != null){
+			if(GameController.Option.equals("-w") && GameController.arg0 != null){
+				GameController.socket = new UDPSocket(Integer.parseInt(GameController.arg0));
+			} else {
+				GameController.socket = new UDPSocket();
+			}
+		}else{
+			GameController.socket = new UDPSocket();			
 		}
 		localPort = GameController.socket.getLocalPort();
 		try {
@@ -74,7 +78,7 @@ public class Receive implements Runnable{
 			System.out.print("RX: in: " + incomingGS.gameStateNum + ",a" + incomingGS.attacks.size() + " mstbefore: " + mst.gameStateNum + ",a" + mst.attacks.size() );
 			ReconcileMasterGS(incomingGS);			
 			mst = GameController.MasterGS.readGameState();
-			System.out.println(mst);
+			//System.out.println(mst);
 			System.out.println("  mstafter: " + mst.gameStateNum + ",a" + mst.attacks.size());
 			//System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
 		}		
