@@ -229,6 +229,28 @@
        fx="301.20111"
        fy="486.07178"
        r="162.22581" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3247"
+       id="radialGradient2433"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-0.1486313,1.7070174,-1.8741769,-0.1631859,1288.8111,-31.350721)"
+       cx="333.63742"
+       cy="482.08246"
+       fx="333.63742"
+       fy="482.08246"
+       r="162.22581" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3237"
+       id="radialGradient2437"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-0.1486313,1.7070174,-1.8741769,-0.1631859,1288.8111,-31.350721)"
+       cx="333.63742"
+       cy="482.08246"
+       fx="333.63742"
+       fy="482.08246"
+       r="162.22581" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -241,7 +263,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="472.83375"
+     inkscape:cx="417.11946"
      inkscape:cy="589.82855"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -382,5 +404,31 @@
            style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.59448814;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter3336)" />
       </g>
     </g>
+    <path
+       transform="matrix(5.9734512e-2,0,0,5.9734512e-2,333.1163,451.15913)"
+       inkscape:export-ydpi="116.66672"
+       inkscape:export-xdpi="116.66672"
+       inkscape:export-filename="E:\Documents and Settings\Zain\My Documents\My Documents\School\2009_1 Spring\EE360P Concurrent and Distributed Systems\Programs\HiveWars\hivewars\redBall.png"
+       d="M 545.71428,522.36218 A 161.42857,161.42857 0 1 1 222.85713,522.36218 A 161.42857,161.42857 0 1 1 545.71428,522.36218 z"
+       sodipodi:ry="161.42857"
+       sodipodi:rx="161.42857"
+       sodipodi:cy="522.36218"
+       sodipodi:cx="384.28571"
+       id="path2431"
+       style="fill:url(#radialGradient2433);fill-opacity:1.0;stroke:none;stroke-width:1.59448813999999990;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="fill:url(#radialGradient2437);fill-opacity:1.0;stroke:none;stroke-width:1.59448813999999990;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path2435"
+       sodipodi:cx="384.28571"
+       sodipodi:cy="522.36218"
+       sodipodi:rx="161.42857"
+       sodipodi:ry="161.42857"
+       d="M 545.71428,522.36218 A 161.42857,161.42857 0 1 1 222.85713,522.36218 A 161.42857,161.42857 0 1 1 545.71428,522.36218 z"
+       inkscape:export-filename="E:\Documents and Settings\Zain\My Documents\My Documents\School\2009_1 Spring\EE360P Concurrent and Distributed Systems\Programs\HiveWars\hivewars\blueBall.png"
+       inkscape:export-xdpi="116.66635"
+       inkscape:export-ydpi="116.66635"
+       transform="matrix(5.9734512e-2,0,0,5.9734512e-2,370.6163,451.15913)" />
   </g>
 </svg>
