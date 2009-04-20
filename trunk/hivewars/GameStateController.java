@@ -11,7 +11,8 @@ import java.util.concurrent.Semaphore;
 public class GameStateController {
 	
 	private GameStateData gameState;
-	private final Semaphore GSFree = new Semaphore(1, true);
+	private final Semaphore GSFreeForReading = new Semaphore(1, true);
+	private final Semaphore GSFreeForWriting = new Semaphore(1, true);
 
 	public GameStateController() {
 		gameState = new GameStateData();
@@ -53,20 +54,26 @@ public class GameStateController {
 				//subtract one minion from the source hive and
 				//add the attack to arraylist of attacks
 				//*no check to keep the enemy's numMinions from going negative
-				if (!attackExists){
+				if (attackExists == false){
 					hive.numMinions--;	
 					if(attack.player == GameController.Me){
-						gameState.attacks.add(attack);
-					} else { //if the attack belongs to the enemy
-						//if this attack causes the enemy's hive to go below 1 ignore it and
-						//let them know they have broken a rule but storing the attack in subtractThisAttack
-						//else add attack to the array list
 						if(hive.numMinions == 0){
 							hive.numMinions = 1;
-							gameState.subtractThisAttack = attack;
 						} else {
 							gameState.attacks.add(attack);
 						}
+			    		//if (!this.equals(GameController.MasterGS)) System.out.println("gs: " +
+			    			//	gameState.gameStateNum + "source,numMin: " + attack.sourceHiveNum +
+			    			//	"," + hive.numMinions + " dest: " + attack.destHiveNum + " fireTime: " +
+			    			//	attack.firingTime + " hitTime " + attack.hitTime + " attacks.size(): " +
+			    			//	gameState.attacks.size());
+					} else { //if the attack belongs to the enemy
+						gameState.attacks.add(attack);
+						//if (!this.equals(GameController.MasterGS)) System.out.println("gs: " +
+							//	gameState.gameStateNum + "source,numMin: " + attack.sourceHiveNum + "," +
+							//	hive.numMinions + " dest: " + attack.destHiveNum + " fireTime: " +
+							//	attack.firingTime + " hitTime " + attack.hitTime + " attacks.size(): " +
+							//	gameState.attacks.size());
 					}
 				}
 			}
@@ -127,13 +134,23 @@ public class GameStateController {
 		}
 	}
 
-	public void getSemaphore(){
+	public void getSemaphoreForReading(){
 	  try {
-	          GSFree.acquire();
+	          GSFreeForReading.acquire();
 	  } catch (InterruptedException e) {e.printStackTrace();}
 	}
 	
-	public void releaseSemaphore(){
-	  GSFree.release();
+	public void releaseSemaphoreForReading(){
+		GSFreeForReading.release();
+	}	
+	
+	public void getSemaphoreForWriting(){
+		try {
+			GSFreeForWriting.acquire();
+		  } catch (InterruptedException e) {e.printStackTrace();}
+		}
+		
+	public void releaseSemaphoreForWritng(){
+		GSFreeForWriting.release();
 	}	
 }

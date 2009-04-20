@@ -117,10 +117,10 @@ public class GameController implements GameSettings{
 			double hyp;
 			double xv, yv;
 			double xdist, ydist;
-			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x - 25;
-			int destX = Map.hives.get(newAttack.destHiveNum).x - 25;
-			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y - 25;
-			int destY = Map.hives.get(newAttack.destHiveNum).y - 25;
+			int sourceX = Map.hives.get(newAttack.sourceHiveNum).x - 12;
+			int destX = Map.hives.get(newAttack.destHiveNum).x - 12;
+			int sourceY = Map.hives.get(newAttack.sourceHiveNum).y - 12;
+			int destY = Map.hives.get(newAttack.destHiveNum).y - 12;
 			//calculate hitTime
 			xdist = destX - sourceX;
 			ydist = destY - sourceY;

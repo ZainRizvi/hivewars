@@ -56,35 +56,36 @@ public class Receive implements Runnable{
 	// Reconciles the Master and Viewable game states with incoming game state
 	//
 	public synchronized void ReconcileMasterGS(GameStateData newGS){
-		GameController.ViewableGS.getSemaphore();
-		GameController.MasterGS.getSemaphore();
+		GameStateController ViewableUpdate = new GameStateController();
+		GameStateController MasterUpdate = new GameStateController();
 		
-		int viewStateNum = GameController.ViewableGS.readGameState().gameStateNum;
+		GameController.ViewableGS.getSemaphoreForWriting();
+		GameController.MasterGS.getSemaphoreForWriting();
+		
+		GameController.ViewableGS.getSemaphoreForReading();
+			ViewableUpdate.updateGameState(GameController.ViewableGS.readGameState());
+		GameController.ViewableGS.releaseSemaphoreForReading();
+		GameController.MasterGS.getSemaphoreForReading();
+			MasterUpdate.updateGameState(GameController.MasterGS.readGameState());
+		GameController.MasterGS.releaseSemaphoreForReading();
+		
+		int viewStateNum = ViewableUpdate.readGameState().gameStateNum;
 		int incomingStateNum = newGS.gameStateNum;
 		
 		//catch masterGS up to whichever GS is behind (meaning you spawn minions and check for collisions)
 		if(viewStateNum >= incomingStateNum){
 			//Forward old GameState to be at the same state number as new GS.
 			//Viewable is already at or ahead of MasterGS
-			GameController.MasterGS.fastForward(incomingStateNum);
+			MasterUpdate.fastForward(incomingStateNum);
 		}else{
-			GameController.MasterGS.fastForward(viewStateNum);
+			MasterUpdate.fastForward(viewStateNum);
 		}
 		
 		// Add all attacks from the viewable up to this state
-		ArrayList<Attack> vattacks = GameController.ViewableGS.readGameState().attacks;
+		ArrayList<Attack> vattacks = ViewableUpdate.readGameState().attacks;
 		for (int i = 0; i < vattacks.size(); i++){
 			Attack a = vattacks.get(i);
-			GameController.MasterGS.addAttack(a);
-		}
-		
-		//------------subtract attack-------------------
-		//if the enemy says that I fired illegally believe him and subtract the illegal attack 
-		if(newGS.subtractThisAttack != null){
-			GameController.ViewableGS.readGameState().hives.get(newGS.subtractThisAttack.sourceHiveNum).numMinions++;
-			GameController.MasterGS.readGameState().hives.get(newGS.subtractThisAttack.sourceHiveNum).numMinions++;
-			GameController.ViewableGS.readGameState().attacks.remove(newGS.subtractThisAttack);
-			GameController.ViewableGS.readGameState().attacks.remove(newGS.subtractThisAttack);
+			MasterUpdate.addAttack(a);
 		}
 		
 		// Add all new attacks from the newGS into master and viewable game states
@@ -99,31 +100,30 @@ public class Receive implements Runnable{
 			//THIS COULD POSSIBLY BE REMOVED BECAUSE YOU CHECK FOR REDUNDANT ATTACK IN ADDATTACK()
 			//WHY WOULD I LOAD MY OWN ATTACK AT ALL HERE, I DID IT ALREADY
 			if(attack.player == GameController.Me){
-				if(attack.firingTime > GameController.prevOwnAttackTime){
-					if(attack.firingTime > maxOwnFiring){
-						maxOwnFiring = attack.firingTime;
-					}
-					GameController.MasterGS.addAttack(attack);
-					GameController.ViewableGS.addAttack(attack);
-				}				
+
 			}else{	
 				if(attack.firingTime > GameController.prevOpponentAttackTime){
 					if(attack.firingTime > maxOpponentFiring){
 						maxOpponentFiring = attack.firingTime;
 					}
-					GameController.MasterGS.addAttack(attack);
-					GameController.ViewableGS.addAttack(attack);
+					MasterUpdate.addAttack(attack);
+					ViewableUpdate.addAttack(attack);
 				}
 			}
 		}
-		if (maxOwnFiring > GameController.prevOwnAttackTime){			
-			GameController.prevOwnAttackTime = maxOwnFiring;
-		}
+
 		if (maxOpponentFiring > GameController.prevOpponentAttackTime){			
 			GameController.prevOpponentAttackTime = maxOpponentFiring;
 		}
 		
-		GameController.MasterGS.releaseSemaphore();
-		GameController.ViewableGS.releaseSemaphore();
+		GameController.MasterGS.getSemaphoreForReading();
+			GameController.MasterGS.updateGameState(MasterUpdate.readGameState());
+		GameController.MasterGS.releaseSemaphoreForReading();
+		GameController.ViewableGS.getSemaphoreForReading();
+			GameController.ViewableGS.updateGameState(ViewableUpdate.readGameState());
+		GameController.ViewableGS.releaseSemaphoreForReading();
+		
+		GameController.MasterGS.releaseSemaphoreForWritng();
+		GameController.ViewableGS.releaseSemaphoreForWritng();
 	}	
 }
