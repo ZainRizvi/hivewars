@@ -18,6 +18,16 @@ public class Clock implements Runnable{
 	}
     public void run() {
     	try {
+    		
+    		// Need to lag?
+    		if (GameController.MasterGS.readGameState().gameStateNum + 10 
+    				<= GameController.ViewableGS.readGameState().gameStateNum){
+    			System.out.println("lag");
+    			transmitCurrentViewable();
+    			return;
+    		}
+    		
+    		
 			createNewViewableGameState();
 			
 			//  Update Master Game State to either the remote game state or viewable game state,

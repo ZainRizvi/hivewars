@@ -4,6 +4,7 @@ import hivewars.GameSettings.Control;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 public class Receive implements Runnable{
 	int localPort;
@@ -94,6 +95,13 @@ public class Receive implements Runnable{
 		
 		if(GameController.lastRemoteClock < newGS.gameStateNum){
 			GameController.lastRemoteClock = newGS.gameStateNum;
+		}
+		
+		// Add all attacks from the viewable up to this state
+		ArrayList<Attack> vattacks = GameController.ViewableGS.readGameState().attacks;
+		for (int i = 0; i < vattacks.size(); i++){
+			Attack a = vattacks.get(i);
+			GameController.MasterGS.addAttack(a);
 		}
 		
 		//add all new attacks from the newGS into master and viewable game states
