@@ -100,14 +100,14 @@ public class GameController implements GameSettings{
 				Thread.sleep(200);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}; 
-		if(Me == Control.PlayerB){
+		//if(Me == Control.PlayerB){
 			// Start playing. when player A will start when he receives player B's first state  
-			GameStarted = true; 
-		}
+			//GameStarted = true; 
+		//}
 		//System.out.println("getting somewhere: " + Me);
 		// Player A wait for Player B to send him a game state.  
 		//    Allows him to learn B's inet and port address
-		while (!GameStarted);
+		//while (!GameStarted);
 		
 		while(!GameFinished){
 			//call clock every 100ms

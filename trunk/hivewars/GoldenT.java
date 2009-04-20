@@ -144,7 +144,7 @@ public class GoldenT extends Game {
 		connectButton.setEnabled(false);
 		connectButton.setVisible(false);
 		frame.add(connectButton);
-		cancelWaitButton = new TButton("Cancel", 300, 450, 200, 50) {
+		cancelWaitButton = new TButton("Cancel", 300, 400, 200, 50) {
 			public void doAction() {
 				mode = -2;
 			}
@@ -597,10 +597,10 @@ public class GoldenT extends Game {
     		//display waiting
     		ann.drawString(g, "Waiting ...", 400 - ann.getWidth("Waiting ...") / 2, 250 - ann.getHeight());
         	ann.drawString(g, "Local Port: " + GameController.localPort, 
-        			400 - ann.getWidth("Local Port: " + GameController.localPort) / 2, 300 - ann.getHeight());
+        			400 - ann.getWidth("Local Port: " + GameController.localPort) / 2, 350 - ann.getHeight());
         	ann.drawString(g, "Local IP Address: " + GameController.localInetAddr.toString(), 
         			400 - ann.getWidth("Local IP Address: " + GameController.localInetAddr.toString()) / 2, 
-        			350 - ann.getHeight());
+        			300 - ann.getHeight());
     		frame.render(g);
     	} if(mode == 4){
     		label.drawString(g, "IP: ", 350 - label.getWidth("IP: "), 250);
