@@ -22,11 +22,14 @@ public class Clock implements Runnable{
 			
 			//  Update Master Game State to either the remote game state or viewable game state,
 			//    whichever is lower
+			
+			/*
 			GameController.MasterGS.getSemaphore();
 			if (GameController.lastRemoteClock > GameController.MasterGS.readGameState().gameStateNum){
 				GameController.MasterGS.fastForward(GameController.ViewableGS.readGameState().gameStateNum);
 			}
 			GameController.MasterGS.releaseSemaphore();
+			*/
 			
 	    	transmitCurrentViewable();
 	    	
@@ -111,7 +114,7 @@ public class Clock implements Runnable{
     	
     	GameController.ViewableGS.getSemaphore();
     	GameStateData vgs = GameController.ViewableGS.readGameState();
-		System.out.print("TX: " + vgs.gameStateNum + ",a" + vgs.attacks.size() );    	
+		System.out.println("TX: " + vgs.gameStateNum + ",a" + vgs.attacks.size() );    	
     	//System.out.println("TX: " + GameController.ViewableGS.readGameState().gameStateNum);
     	GameController.socket.sendMessage(
     			GameController.ViewableGS.readGameState(), 
