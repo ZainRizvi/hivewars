@@ -17,17 +17,20 @@ public class Clock implements Runnable{
 		this.run();
 	}
     public void run() {
+		int masterGameStateNum;
+		int viewableGameStateNum;
+		
+    	GameController.MasterGS.getSemaphore();
+		masterGameStateNum = GameController.MasterGS.readGameState().gameStateNum;
+		GameController.MasterGS.releaseSemaphore();
+		GameController.ViewableGS.getSemaphore();
+		viewableGameStateNum = GameController.ViewableGS.readGameState().gameStateNum;
+		GameController.ViewableGS.releaseSemaphore();
+		
     	try {    		
     		// Need to lag?
-    		if (GameController.MasterGS.readGameState().gameStateNum + 10 
-    				<= GameController.ViewableGS.readGameState().gameStateNum){
-    			transmitCurrentViewable();
-    			return;
-    		}    		
-    		
-			createNewViewableGameState();			
-	    	transmitCurrentViewable();
-	    	
+    		if (masterGameStateNum + 10 > viewableGameStateNum) createNewViewableGameState();			
+			transmitCurrentViewable();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
