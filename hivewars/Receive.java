@@ -72,8 +72,9 @@ public class Receive implements Runnable{
 			//GameController.MasterGS.ReconcileGS(incomingGS);
 			GameStateData mst = GameController.MasterGS.readGameState();
 			System.out.print("RX: in: " + incomingGS.gameStateNum + ",a" + incomingGS.attacks.size() + " mstbefore: " + mst.gameStateNum + ",a" + mst.attacks.size() );
-			ReconcileMasterGS(incomingGS);
+			ReconcileMasterGS(incomingGS);			
 			mst = GameController.MasterGS.readGameState();
+			System.out.println(mst);
 			System.out.println("  mstafter: " + mst.gameStateNum + ",a" + mst.attacks.size());
 			//System.out.print(">MS:" + GameController.MasterGS.readGameState() + " VS: " + GameController.ViewableGS.readGameState() + '\t'); 
 		}		
@@ -84,6 +85,7 @@ public class Receive implements Runnable{
 	// Reconciles the Master and Viewable game states with incoming game state
 	//
 	public synchronized void ReconcileMasterGS(GameStateData newGS){
+		System.out.println("ReconcileMasterGS");
 		GameController.MasterGS.getSemaphore();
 		
 		int oldStateNum = GameController.MasterGS.readGameState().gameStateNum;

@@ -56,6 +56,8 @@ public class Clock implements Runnable{
     }
     
     public static void createNewViewableGameState() throws InterruptedException{
+    	System.out.println("createNewViewableGameState");
+    	
     	Attack currentAttack = GameController.readCurrentAttack();
     	
     	GameController.ViewableGS.getSemaphore();
@@ -64,7 +66,7 @@ public class Clock implements Runnable{
 	    	if(currentAttack != null){
 	    		GameController.ViewableGS.addAttack(currentAttack); 
 	
-				System.out.println("Current Attack: " + currentAttack);
+				System.out.println("Clock reads attack: " + currentAttack);
 	    		GameController.writeCurrentAttack(null);  //reset current attack variable
 	    	}
     	} else {
@@ -108,6 +110,9 @@ public class Clock implements Runnable{
     		}
     		GameController.LastHit = lastHit;
     	}
+    	
+    	System.out.println(GameController.MasterGS.readGameState());
+    	
     }
     
     public static void transmitCurrentViewable(){

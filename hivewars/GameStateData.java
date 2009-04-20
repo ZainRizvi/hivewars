@@ -25,7 +25,13 @@ public class GameStateData implements Serializable{
 	//used to clone gameState
 	public GameStateData(GameStateData gameState){
 		gameStateNum = gameState.gameStateNum;
-		hives = (HashMap<Integer,Hive>) gameState.hives.clone();
+		hives = new HashMap<Integer,Hive>();
+		
+		HashMap<Integer,Hive> otherH = gameState.hives;
+		for (int i = 0; i < otherH.size(); i++){
+			Hive h = new Hive(otherH.get(i)); //creates a deep copy of the hive
+			hives.put(h.id, h);
+		}		
 		attacks = (ArrayList<Attack>) gameState.attacks.clone();
 	}
 
@@ -40,6 +46,8 @@ public class GameStateData implements Serializable{
 		for (int i = 0; i < attacks.size(); i ++){
 			s+= attacks.get(i) + "\n";
 		}
+		
+		s+="}\n";
 		
 		return s;
 	}
