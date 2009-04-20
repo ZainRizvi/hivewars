@@ -45,6 +45,6 @@ public class Attack implements Serializable{
 	}
 	
 	public String toString(){
-		return (player + ": from " + sourceHiveNum + " to " + destHiveNum + " - hit time = " + hitTime);
+		return (player + ": " + sourceHiveNum + " to " + destHiveNum + " - hit time = " + hitTime);
 	}
 }

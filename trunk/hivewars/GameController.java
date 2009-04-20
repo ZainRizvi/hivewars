@@ -100,7 +100,7 @@ public class GameController implements GameSettings{
 			new Clock();
 			Thread.currentThread();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}
 		
