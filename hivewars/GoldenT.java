@@ -43,8 +43,8 @@ public class GoldenT extends Game {
 	Background bg;
 	Color c;
 	ArrayList<MinionNumber> minionNumbers;
-	int click;
-	int selectedHive, sourceHive, destHive;
+	int click1, click2;
+	int selectedHive1, selectedHive2, sourceHive, destHive;
 	int mode;
 	//sprites
 	ArrayList<VolatileSprite> explosions;
@@ -64,14 +64,17 @@ public class GoldenT extends Game {
 	//constructor
 	public GoldenT() {
 		//read initial Viewable game state
-		GameController.ViewableGS.getSemaphore();
+		GameController.ViewableGS.getSemaphoreForReading();
 		currentGS = GameController.ViewableGS.readGameState();
-		GameController.ViewableGS.releaseSemaphore();
+		GameController.ViewableGS.releaseSemaphoreForReading();
 		NUMBER_OF_HIVES = currentGS.hives.size();
-    	click = 0;
+    	click1 = 1;
+    	click2 = 2;
     	userError = 0;
     	oldGameStateNum = -1;
-    	selectedHive = -1;
+    	selectedHive1 = -1;
+    	selectedHive2 = -1;
+    	sourceHive = -1;
     	//determine starting mode
 		//System.out.println("gui: " + GameController.Option + " " + GameController.arg0 + " " + GameController.arg1);
 		if(GameController.Option != null){
@@ -432,9 +435,9 @@ public class GoldenT extends Game {
     		////System.out.println(GameController.Me);
     		////System.out.println(GameController.GameStarted);
 	    	//update currentGS from ViewableGS
-	    	GameController.ViewableGS.getSemaphore();
+	    	GameController.ViewableGS.getSemaphoreForReading();
     		currentGS = GameController.ViewableGS.readGameState();
-    		GameController.ViewableGS.releaseSemaphore();
+    		GameController.ViewableGS.releaseSemaphoreForReading();
 	    	if(currentGS.gameStateNum == oldGameStateNum){
 				Thread.currentThread();
 				try {
@@ -451,22 +454,24 @@ public class GoldenT extends Game {
 		    		if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerA) {
 		    			if(hives.get(k).getFrame() != 0){
 		    				if(sourceHive == k) {
-			    				click = 0;
+			    				click1 = 1;
+			    				sourceHive = -1;
 		    				}
 		    			}
 		    			hives.get(k).setAnimationFrame(0, 2);
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerB) {
 		    			if(hives.get(k).getFrame() != 1){
 		    				if(sourceHive == k) {
-			    				click = 0;
+			    				click1 = 1;
+			    				sourceHive = -1;
 		    				}
 		    			}
 		    			hives.get(k).setAnimationFrame(1, 2);
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.Neutral) {
 		    			if(hives.get(k).getFrame() != 2){
 		    				Timer t = new Timer(100);
-		    				VolatileSprite v = new VolatileSprite(fireBall, hives.get(k).getX() - 61, 
-		    						hives.get(k).getY() - 61);
+		    				VolatileSprite v = new VolatileSprite(fireBall, hives.get(k).getX() - 70, 
+		    						hives.get(k).getY() - 70);
 		    				v.setAnimationTimer(t);
 		    				BigExplosions.add(v);
 		    			}
@@ -501,10 +506,10 @@ public class GoldenT extends Game {
 		    	}
 		    	//change attack locations on the screen
 		    	for(int k = 0; k < attacks.size(); k ++) {
-		    		int sourceX = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).x;
-		    		int sourceY = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).y;
-		    		int destX = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).x;
-		    		int destY = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).y;
+		    		int sourceX = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).x - 12;
+		    		int sourceY = currentGS.hives.get(currentGS.attacks.get(k).sourceHiveNum).y - 12;
+		    		int destX = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).x - 12;
+		    		int destY = currentGS.hives.get(currentGS.attacks.get(k).destHiveNum).y - 12;
 		    		double[] v = getSpeedTo(sourceX, sourceY, destX, destY);
 		    		//x = sourceHive.x + traveledDistance
 		    		//or x = sourceHive.x + (currentTime - firingTime) * xSpeed
@@ -532,50 +537,72 @@ public class GoldenT extends Game {
 	    	if(bsInput.isMouseDown(MouseEvent.BUTTON1)) {
 	    		int xm = getMouseX();
 	    		int ym = getMouseY();
-	    		selectedHive = -1;
+	    		selectedHive1 = -1;
 	    		for(int k = 0; k < hives.size(); k ++){	
 					if(xm >= hives.get(k).getX() && xm <= hives.get(k).getX() + hives.get(k).getWidth() &&
 	    			   ym >= hives.get(k).getY() && ym <= hives.get(k).getY() + hives.get(k).getHeight()){
-						selectedHive = k;
+						selectedHive1 = k;
 	    			}
 	    		}  	
-	    		//if(selectedHive != -1) //System.out.println("outside if selected: " + selectedHive + " click: " + click + " controlling player: " + currentGS.hives.get(selectedHive).controllingPlayer);
-	    		if(click == 0){
-	    			if(selectedHive == -1){
-	    				click = 0;
-	    			} else if(currentGS.hives.get(selectedHive).controllingPlayer == GameController.Me) {
-	    				click = 1;
-	    				sourceHive = selectedHive;
-	    				//System.out.println("click: " + click + " sourceHive: " + sourceHive);
-	    			}
-	    		} else if (click == 2) {
-	    			if(selectedHive == -1) {
-	    				click = 1;
-	    			} else if(currentGS.hives.get(selectedHive).controllingPlayer == GameController.Me){
-	    				click = 1;
-	    				sourceHive = selectedHive;	
-	    				//System.out.println("click: " + click + " sourceHive: " + sourceHive);
-	    				//*make sourceHive a special selected color*
-	    			} else { 
-	    				click = 1;
-	    				destHive = selectedHive;
+	    		if (click1 == 2) {
+	    			if(selectedHive1 == -1) {
+	    				click1 = 1;
+	    			} else if(sourceHive != -1){
+	    				click1 = 1;
+	    				destHive = selectedHive1;
 						try {
-							GameController.writeCurrentAttack(new Attack(GameController.Me, 
-									(char) sourceHive, (char) destHive, (short) currentGS.gameStateNum));
-							//System.out.println("new attack: source: " + sourceHive + " dest: " + destHive + " stateNum: " + currentGS.gameStateNum);
+							if((currentGS.hives.get(destHive).numMinions - 1) != 0){
+								GameController.writeCurrentAttack(new Attack(GameController.Me, 
+										(char) sourceHive, (char) destHive, (short) currentGS.gameStateNum));
+							}
+								//System.out.println("new attack: source: " + sourceHive + " dest: " + destHive + " stateNum: " + currentGS.gameStateNum);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+	    			} else {
+	    				click1 = 1;
 	    			}
-	    		}
+	    		} else { //click1 = 1;
+    				// do nothing
+    			}
 	    	}
 	    	
 	    	if(!bsInput.isMouseDown(MouseEvent.BUTTON1)){
-	    		if(click == 1){
-	    			click = 2;
+	    		if(click1 == 1){
+	    			click1 = 2;
 	    		}
 	    	}
+	    	
+	    	//check for mouse event
+	    	if(bsInput.isMouseDown(MouseEvent.BUTTON3)) {
+	    		int xm = getMouseX();
+	    		int ym = getMouseY();
+	    		selectedHive2 = -1;
+	    		for(int k = 0; k < hives.size(); k ++){	
+					if(xm >= hives.get(k).getX() && xm <= hives.get(k).getX() + hives.get(k).getWidth() &&
+	    			   ym >= hives.get(k).getY() && ym <= hives.get(k).getY() + hives.get(k).getHeight()){
+						selectedHive2 = k;
+	    			}
+	    		}  	
+	    		if (click2 == 2) {
+	    			if(selectedHive2 == -1) {
+	    				click2 = 1;
+	    			} else if(currentGS.hives.get(selectedHive2).controllingPlayer == GameController.Me){
+	    				click2 = 1;
+	    				sourceHive = selectedHive2;	
+	    				//System.out.println("click2: " + click2 + " sourceHive: " + sourceHive);
+	    				//*make sourceHive a special selected color*
+	    			} 
+	    		}
+	    	}
+	    	
+	    	if(!bsInput.isMouseDown(MouseEvent.BUTTON3)){
+	    		if(click2 == 1){
+	    			click2 = 2;
+	    		}
+	    	}
+	    	
 	    	//*tell sprites which way to face when they are walking*
     		
 	    	if(GameController.GameFinished){
