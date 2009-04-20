@@ -430,7 +430,9 @@ public class GoldenT extends Game {
     		////System.out.println(GameController.Me);
     		////System.out.println(GameController.GameStarted);
 	    	//update currentGS from ViewableGS
-	    	currentGS = GameController.ViewableGS.readGameState();
+	    	GameController.ViewableGS.getSemaphore();
+    		currentGS = GameController.ViewableGS.readGameState();
+    		GameController.ViewableGS.releaseSemaphore();
 	    	if(currentGS.gameStateNum == oldGameStateNum){
 				Thread.currentThread();
 				try {
