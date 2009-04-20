@@ -33,6 +33,12 @@ public class GameStateController {
 	public synchronized void addAttack(Attack attack){
 		Hive hive = gameState.hives.get(attack.sourceHiveNum);
 		// Make sure hive has minions to shoot
+		
+		if (attack.hitTime <= GameController.MasterGS.readGameState().gameStateNum){
+			System.out.println("Nice try!");
+			return;
+		}
+		
 		if(hive.numMinions>0){
 			boolean attackExists = false;
 			for(int i = 0; i < gameState.attacks.size(); i ++){
