@@ -28,12 +28,16 @@ public class GameStateController {
 	
 	public void addAttack(Attack attack){	
 		Hive hive = gameState.hives.get(attack.sourceHiveNum);
-
+		gameState.subtractThisAttack = null; 	//be careful not to tell the enemy they have fired illegally unless 
+												//they really have
 		// BIG CHANGE HERE
 		if (attack.hitTime <= this.gameState.gameStateNum){
 			//Do nothing
-		}else{		
+		}else{ //if the attack has not hit yet	
+			//add the attack if it is my attack and I have at least two minions or
+			//it is the enemy's attack
 			if(attack.player != GameController.Me || hive.numMinions>1){
+				//check to see if the attack already exists in the arraylist of attacks
 				boolean attackExists = false;
 				for(int i = 0; i < gameState.attacks.size(); i ++){
 					Attack existingattack = gameState.attacks.get(i);				
@@ -45,9 +49,25 @@ public class GameStateController {
 					}				
 				}
 				
+				//if it does not already exist then
+				//subtract one minion from the source hive and
+				//add the attack to arraylist of attacks
+				//*no check to keep the enemy's numMinions from going negative
 				if (!attackExists){
-					gameState.attacks.add(attack);
-					hive.numMinions--;
+					hive.numMinions--;	
+					if(attack.player == GameController.Me){
+						gameState.attacks.add(attack);
+					} else { //if the attack belongs to the enemy
+						//if this attack causes the enemy's hive to go below 1 ignore it and
+						//let them know they have broken a rule but storing the attack in subtractThisAttack
+						//else add attack to the array list
+						if(hive.numMinions == 0){
+							hive.numMinions = 1;
+							gameState.subtractThisAttack = attack;
+						} else {
+							gameState.attacks.add(attack);
+						}
+					}
 				}
 			}
 		}

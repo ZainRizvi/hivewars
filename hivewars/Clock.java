@@ -29,6 +29,7 @@ public class Clock implements Runnable{
 		
     	try {    		
     		// Need to lag?
+    		//create new game state unless viewable is more than 10 states ahead of the master
     		if (masterGameStateNum + 10 > viewableGameStateNum) createNewViewableGameState();			
 			transmitCurrentViewable();
 		} catch (InterruptedException e) {
@@ -95,8 +96,8 @@ public class Clock implements Runnable{
 	    		GameController.GameFinished = gameOver;
     		}
     	}
+    	GameController.MasterGS.releaseSemaphore();    
     	GameController.ViewableGS.releaseSemaphore();
-    	GameController.MasterGS.releaseSemaphore();    	
     }
     
     

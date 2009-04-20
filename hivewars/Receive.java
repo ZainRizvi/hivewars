@@ -56,12 +56,13 @@ public class Receive implements Runnable{
 	// Reconciles the Master and Viewable game states with incoming game state
 	//
 	public synchronized void ReconcileMasterGS(GameStateData newGS){
-		GameController.MasterGS.getSemaphore();
 		GameController.ViewableGS.getSemaphore();
+		GameController.MasterGS.getSemaphore();
 		
 		int viewStateNum = GameController.ViewableGS.readGameState().gameStateNum;
 		int incomingStateNum = newGS.gameStateNum;
 		
+		//catch masterGS up to whichever GS is behind (meaning you spawn minions and check for collisions)
 		if(viewStateNum >= incomingStateNum){
 			//Forward old GameState to be at the same state number as new GS.
 			//Viewable is already at or ahead of MasterGS
@@ -77,6 +78,15 @@ public class Receive implements Runnable{
 			GameController.MasterGS.addAttack(a);
 		}
 		
+		//------------subtract attack-------------------
+		//if the enemy says that I fired illegally believe him and subtract the illegal attack 
+		if(newGS.subtractThisAttack != null){
+			GameController.ViewableGS.readGameState().hives.get(newGS.subtractThisAttack.sourceHiveNum).numMinions++;
+			GameController.MasterGS.readGameState().hives.get(newGS.subtractThisAttack.sourceHiveNum).numMinions++;
+			GameController.ViewableGS.readGameState().attacks.remove(newGS.subtractThisAttack);
+			GameController.ViewableGS.readGameState().attacks.remove(newGS.subtractThisAttack);
+		}
+		
 		// Add all new attacks from the newGS into master and viewable game states
 		int numAttacks = newGS.attacks.size();
 		int maxOpponentFiring = 0;
@@ -85,6 +95,9 @@ public class Receive implements Runnable{
 		for(int i = 0; i < numAttacks; i++){
 			Attack attack = newGS.attacks.get(i);
 			
+			//make sure you don't add any attacks twice?
+			//THIS COULD POSSIBLY BE REMOVED BECAUSE YOU CHECK FOR REDUNDANT ATTACK IN ADDATTACK()
+			//WHY WOULD I LOAD MY OWN ATTACK AT ALL HERE, I DID IT ALREADY
 			if(attack.player == GameController.Me){
 				if(attack.firingTime > GameController.prevOwnAttackTime){
 					if(attack.firingTime > maxOwnFiring){
@@ -110,8 +123,7 @@ public class Receive implements Runnable{
 			GameController.prevOpponentAttackTime = maxOpponentFiring;
 		}
 		
-		
-		GameController.ViewableGS.releaseSemaphore();
 		GameController.MasterGS.releaseSemaphore();
+		GameController.ViewableGS.releaseSemaphore();
 	}	
 }

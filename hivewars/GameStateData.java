@@ -16,7 +16,7 @@ public class GameStateData implements Serializable{
 	int gameStateNum;        //clock time when this state occurred
 	HashMap<Integer,Hive> hives; 	   //all hives and their statuses
 	ArrayList<Attack> attacks; //all attacks under progress
-	
+	Attack subtractThisAttack; //alert sent to the enemy to let him know that he sent this attack illegally
 	
 	public GameStateData() {
 		gameStateNum = GameSettings.initialState;
