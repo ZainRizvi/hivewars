@@ -489,6 +489,7 @@ public class GoldenT extends Game {
 		    	}
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
+		    		a.setAnimate(false);
 		    		if(GameController.Me == GameSettings.Control.PlayerA){
 		    			a.setAnimationFrame(2, 2);
 		    		} else {
