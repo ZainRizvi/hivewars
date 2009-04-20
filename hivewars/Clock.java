@@ -22,7 +22,7 @@ public class Clock implements Runnable{
     		// Need to lag?
     		if (GameController.MasterGS.readGameState().gameStateNum + 10 
     				<= GameController.ViewableGS.readGameState().gameStateNum){
-    			System.out.println("lag");
+    			//System.out.println("lag");
     			transmitCurrentViewable();
     			return;
     		}
@@ -49,14 +49,14 @@ public class Clock implements Runnable{
 		
 		//if(GameController.LastHit > GameController.ViewableGS.readGameState().gameStateNum){
 			//if(GameController.MasterGS.readGameState().attacks.size() <= 0){
-		//		System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
+		//		//System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
 		//		GameController.GameFinished = true;
 			//}
 		//}
     }
     
     public static void createNewViewableGameState() throws InterruptedException{
-    	System.out.println("createNewViewableGameState");
+    	//System.out.println("createNewViewableGameState");
     	
     	Attack currentAttack = GameController.readCurrentAttack();
     	
@@ -66,11 +66,11 @@ public class Clock implements Runnable{
 	    	if(currentAttack != null){
 	    		GameController.ViewableGS.addAttack(currentAttack); 
 	
-				System.out.println("Clock reads attack: " + currentAttack);
+				//System.out.println("Clock reads attack: " + currentAttack);
 	    		GameController.writeCurrentAttack(null);  //reset current attack variable
 	    	}
     	} else {
-    		System.out.println("Didn't register the attack");
+    		//System.out.println("Didn't register the attack");
     	}
     	
     	//determine which attacking minions have reached their target, 
@@ -120,7 +120,7 @@ public class Clock implements Runnable{
 	    		GameController.GameFinished = gameOver;
     		}
     	}
-    	//System.out.println(GameController.MasterGS.readGameState());
+    	////System.out.println(GameController.MasterGS.readGameState());
     	
     }
     
@@ -131,15 +131,15 @@ public class Clock implements Runnable{
     	//} else {
     	//	player += "B";
     	//}
-    	//System.out.print(player + ">" + GameController.ViewableGS.readGameState().gameStateNum +
+    	////System.out.print(player + ">" + GameController.ViewableGS.readGameState().gameStateNum +
     	//		"," + GameController.ViewableGS.readGameState().attacks.size() + "atks" + '\t');    	
-    //	System.out.println(player + " sending game state " + GameController.ViewableGS.readGameState().gameStateNum +
+    //	//System.out.println(player + " sending game state " + GameController.ViewableGS.readGameState().gameStateNum +
     //			" Num attacks = " + GameController.ViewableGS.readGameState().attacks.size());
     	
     	GameController.ViewableGS.getSemaphore();
     	GameStateData vgs = GameController.ViewableGS.readGameState();
-		System.out.println("TX: " + vgs.gameStateNum + ",a" + vgs.attacks.size() );    	
-    	//System.out.println("TX: " + GameController.ViewableGS.readGameState().gameStateNum);
+		//System.out.println("TX: " + vgs.gameStateNum + ",a" + vgs.attacks.size() );    	
+    	////System.out.println("TX: " + GameController.ViewableGS.readGameState().gameStateNum);
     	GameController.socket.sendMessage(
     			GameController.ViewableGS.readGameState(), 
     			GameController.remoteInetAddr, 

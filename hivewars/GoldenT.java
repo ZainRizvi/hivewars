@@ -71,7 +71,7 @@ public class GoldenT extends Game {
     	oldGameStateNum = -1;
     	selectedHive = -1;
     	//determine starting mode
-		System.out.println("gui: " + GameController.Option + " " + GameController.arg0 + " " + GameController.arg1);
+		//System.out.println("gui: " + GameController.Option + " " + GameController.arg0 + " " + GameController.arg1);
 		if(GameController.Option != null){
 	    	if(GameController.Option.equals("-m")){
 	    		mode = 0;
@@ -85,7 +85,7 @@ public class GoldenT extends Game {
 		} else {
 			mode = 0;
 		}
-    	System.out.println("mode: " + mode);
+    	//System.out.println("mode: " + mode);
     	
 	}
 	
@@ -206,7 +206,7 @@ public class GoldenT extends Game {
         fireBall[3] = fb4;
     	ColorModel cm = sob.getColorModel();
     	int pixel = sob.getRGB(0, 0);
-    	System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
+    	//System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
     	
     	//set up Font
     	Font f = new Font("Helvetica", Font.PLAIN, 30);
@@ -427,8 +427,8 @@ public class GoldenT extends Game {
     		Hives.setActive(true);
     		mode = 6;
     	} else if(mode == 6){
-    		//System.out.println(GameController.Me);
-    		//System.out.println(GameController.GameStarted);
+    		////System.out.println(GameController.Me);
+    		////System.out.println(GameController.GameStarted);
 	    	//update currentGS from ViewableGS
 	    	currentGS = GameController.ViewableGS.readGameState();
 	    	if(currentGS.gameStateNum == oldGameStateNum){
@@ -461,8 +461,8 @@ public class GoldenT extends Game {
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.Neutral) {
 		    			if(hives.get(k).getFrame() != 2){
 		    				Timer t = new Timer(100);
-		    				VolatileSprite v = new VolatileSprite(fireBall, hives.get(k).getX() - 112, 
-		    						hives.get(k).getY() - 112);
+		    				VolatileSprite v = new VolatileSprite(fireBall, hives.get(k).getX() - 61, 
+		    						hives.get(k).getY() - 61);
 		    				v.setAnimationTimer(t);
 		    				BigExplosions.add(v);
 		    			}
@@ -513,7 +513,7 @@ public class GoldenT extends Game {
 		    		} else {
 		    			attacks.get(k).setAnimationFrame(2, 2);
 		    		}
-		    		//System.out.println("sourceX,Y: " + sourceX + "," + sourceY + " destX,Y: " + destX + "," + destY +
+		    		////System.out.println("sourceX,Y: " + sourceX + "," + sourceY + " destX,Y: " + destX + "," + destY +
 		    			//	" xv,yv: " + v[0] + "," + v[1] + " currX,Y: " + x + "," + y);
 		    		//*set animations*
 		    	}
@@ -535,14 +535,14 @@ public class GoldenT extends Game {
 						selectedHive = k;
 	    			}
 	    		}  	
-	    		//if(selectedHive != -1) System.out.println("outside if selected: " + selectedHive + " click: " + click + " controlling player: " + currentGS.hives.get(selectedHive).controllingPlayer);
+	    		//if(selectedHive != -1) //System.out.println("outside if selected: " + selectedHive + " click: " + click + " controlling player: " + currentGS.hives.get(selectedHive).controllingPlayer);
 	    		if(click == 0){
 	    			if(selectedHive == -1){
 	    				click = 0;
 	    			} else if(currentGS.hives.get(selectedHive).controllingPlayer == GameController.Me) {
 	    				click = 1;
 	    				sourceHive = selectedHive;
-	    				System.out.println("click: " + click + " sourceHive: " + sourceHive);
+	    				//System.out.println("click: " + click + " sourceHive: " + sourceHive);
 	    			}
 	    		} else if (click == 2) {
 	    			if(selectedHive == -1) {
@@ -550,7 +550,7 @@ public class GoldenT extends Game {
 	    			} else if(currentGS.hives.get(selectedHive).controllingPlayer == GameController.Me){
 	    				click = 1;
 	    				sourceHive = selectedHive;	
-	    				System.out.println("click: " + click + " sourceHive: " + sourceHive);
+	    				//System.out.println("click: " + click + " sourceHive: " + sourceHive);
 	    				//*make sourceHive a special selected color*
 	    			} else { 
 	    				click = 1;
@@ -558,7 +558,7 @@ public class GoldenT extends Game {
 						try {
 							GameController.writeCurrentAttack(new Attack(GameController.Me, 
 									(char) sourceHive, (char) destHive, (short) currentGS.gameStateNum));
-							System.out.println("new attack: source: " + sourceHive + " dest: " + destHive + " stateNum: " + currentGS.gameStateNum);
+							//System.out.println("new attack: source: " + sourceHive + " dest: " + destHive + " stateNum: " + currentGS.gameStateNum);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -576,10 +576,10 @@ public class GoldenT extends Game {
     		
 	    	if(GameController.GameFinished){
     			mode = 7;
-    			System.out.println("Game finished!!");
+    			//System.out.println("Game finished!!");
     		}
     	} else {	//mode == 7
-    		System.out.println("Game finished!!");
+    		//System.out.println("Game finished!!");
     	}
     	
     	//update playfield

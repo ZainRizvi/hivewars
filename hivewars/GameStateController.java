@@ -35,7 +35,7 @@ public class GameStateController {
 		// Make sure hive has minions to shoot
 		
 		if (attack.hitTime <= GameController.MasterGS.readGameState().gameStateNum){
-			System.out.println("Nice try!");
+			//System.out.println("Nice try!");
 			return;
 		}
 		
@@ -52,7 +52,7 @@ public class GameStateController {
 			}
 			
 			if (!attackExists){
-				System.out.println("Attack added");
+				//System.out.println("Attack added");
 				gameState.attacks.add(attack);
 				hive.numMinions--;
 			}
@@ -95,7 +95,7 @@ public class GameStateController {
 		// Assumes that the gameState's gameStateNum has not been advanced
 		
 		if (gameState.gameStateNum >= finalStateNum){
-			System.out.println("Trying to rewind?");
+			//System.out.println("Trying to rewind?");
 			return;
 		}
 		
@@ -115,23 +115,23 @@ public class GameStateController {
 					if(hive.numMinions < hive.hiveCapacity){
 						hive.numMinions++;
 					}
-					//System.out.println("new minion count: " + hive.numMinions);
+					////System.out.println("new minion count: " + hive.numMinions);
 				}
-				//System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
+				////System.out.println("Hive " + hive.id + " will spawn dude in " + hive.nextSpawnTime + " seconds");
 			}
 			
 			// Check for collisions
 			ArrayList<Attack> attacks = gameState.attacks;
 			for (int i = 0; i < attacks.size(); i ++){
 				Attack attack = attacks.get(i);
-				//System.out.println("state num: " + gameState.gameStateNum);
-				//System.out.println("processing attack: hitTime = " + attack.hitTime + ", gameSN = " + gameState.gameStateNum);
-				//System.out.println("num attacks: " + attacks.size());
+				////System.out.println("state num: " + gameState.gameStateNum);
+				////System.out.println("processing attack: hitTime = " + attack.hitTime + ", gameSN = " + gameState.gameStateNum);
+				////System.out.println("num attacks: " + attacks.size());
 				if (attack.hitTime <= gameState.gameStateNum){
-					//System.out.println(attack); 
+					////System.out.println(attack); 
 					Hive hive = hives.get(attack.destHiveNum);
-					//System.out.println("Hit registered on hive " + attack.destHiveNum);
-					//System.out.println("Old hive count = " + hive.numMinions);
+					////System.out.println("Hit registered on hive " + attack.destHiveNum);
+					////System.out.println("Old hive count = " + hive.numMinions);
 					if (attack.player == hive.controllingPlayer){
 						hive.numMinions++;
 		//				//hack prevention code below
@@ -147,8 +147,8 @@ public class GameStateController {
 							hive.numMinions = 1;
 						}
 					}
-					//System.out.println("New hive count = " + hive.numMinions);
-					System.out.println("Attack Removed");
+					////System.out.println("New hive count = " + hive.numMinions);
+					//System.out.println("Attack Removed");
 					attacks.remove(i);
 				}				
 			}			
