@@ -44,6 +44,19 @@ public class Hive implements Serializable{
 		//spawnTime = (current state num) + spawnRate; 
 	}
 	
+	public Hive(Hive h){
+		this.id = h.id;
+		this.startingPlayer = h.startingPlayer;
+		this.controllingPlayer = h.controllingPlayer;
+		this.startingMinions = h.startingMinions;
+		this.numMinions = h.numMinions;
+		this.spawnRate = h.spawnRate;
+		this.nextSpawnTime = h.nextSpawnTime;
+		this.hiveCapacity = h.hiveCapacity;
+		this.x = h.x;
+		this.y = h.y;
+	}
+	
 	public String toString(){
 		String s = new String();
 		
