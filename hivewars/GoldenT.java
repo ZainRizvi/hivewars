@@ -175,6 +175,8 @@ public class GoldenT extends Game {
     	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
     	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
     	BufferedImage sob = getImage("greenBall.png", true);
+    	BufferedImage bb = getImage("blueBall.png", true);
+    	BufferedImage rb = getImage("redBall.png", true);
     	c = new Color(255,255,255);
     	setMaskColor(c);
     	BufferedImage be0 = getImage("BubbleExplode0.gif", true);
@@ -187,8 +189,10 @@ public class GoldenT extends Game {
     	BufferedImage fb3 = getImage("FireBall2.gif", true);
     	BufferedImage fb4 = getImage("FireBall3.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
-    	attck = new BufferedImage[1];
+    	attck = new BufferedImage[3];
     	attck[0] = sob;
+    	attck[1] = bb;
+    	attck[2] = rb;
     	expld = new BufferedImage[5];
     	expld[0] = be0;
     	expld[1] = be1;
@@ -441,8 +445,18 @@ public class GoldenT extends Game {
 		    		//update hive color
 		    		startFrame = hives.get(k).getStartAnimationFrame();
 		    		if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerA) {
+		    			if(hives.get(k).getFrame() != 1){
+		    				if(sourceHive == k) {
+			    				click = 0;
+		    				}
+		    			}
 		    			hives.get(k).setAnimationFrame(0, 2);
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.PlayerB) {
+		    			if(hives.get(k).getFrame() != 1){
+		    				if(sourceHive == k) {
+			    				click = 0;
+		    				}
+		    			}
 		    			hives.get(k).setAnimationFrame(1, 2);
 		    		} else if(currentGS.hives.get(k).controllingPlayer == GameSettings.Control.Neutral) {
 		    			if(hives.get(k).getFrame() != 2){
@@ -475,6 +489,11 @@ public class GoldenT extends Game {
 		    	}
 		    	while(currentGS.attacks.size() > attacks.size()) {
 		    		AnimatedSprite a = new AnimatedSprite(attck, 100, 100);
+		    		if(GameController.Me == GameSettings.Control.PlayerA){
+		    			a.setAnimationFrame(2, 2);
+		    		} else {
+		    			a.setAnimationFrame(1, 1);
+		    		}
 		    		a.setAnimationFrame(0, 0);
 		    		a.setAnimate(false);
 		    		a.setActive(true);
