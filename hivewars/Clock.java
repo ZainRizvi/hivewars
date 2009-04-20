@@ -47,12 +47,12 @@ public class Clock implements Runnable{
 			e.printStackTrace();
 		}
 		
-		if(GameController.LastHit > GameController.ViewableGS.readGameState().gameStateNum){
+		//if(GameController.LastHit > GameController.ViewableGS.readGameState().gameStateNum){
 			//if(GameController.MasterGS.readGameState().attacks.size() <= 0){
-				System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
-				GameController.GameFinished = true;
+		//		System.out.println("Remaining attacks: " + GameController.ViewableGS.readGameState().attacks.size() );
+		//		GameController.GameFinished = true;
 			//}
-		}
+		//}
     }
     
     public static void createNewViewableGameState() throws InterruptedException{
@@ -92,26 +92,35 @@ public class Clock implements Runnable{
     			playerBTerr++;
     		}
     	}
-    	if(playerATerr == hives.size()){
-    		GameController.Winner = Control.PlayerA;
-    		GameController.StopAttacks = true;
-    	}
-    	if(playerBTerr == hives.size()){
-    		GameController.Winner = Control.PlayerB;
-    		GameController.StopAttacks = true;
-    	}
-    	if(GameController.StopAttacks == true){
-    		int lastHit = 0;
-    		ArrayList<Attack> remainingAttacks = GameController.ViewableGS.readGameState().attacks; 
-    		for(int i = 0; i < remainingAttacks.size(); i++){
-    			if(remainingAttacks.get(i).hitTime > lastHit){
-    				lastHit = remainingAttacks.get(i).hitTime ;
-    			}
-    		}
-    		GameController.LastHit = lastHit;
-    	}
     	
-    	System.out.println(GameController.MasterGS.readGameState());
+    	
+    	Control leader = Control.Neutral;
+    	if((playerATerr == 0) || (playerBTerr == 0)){
+    		boolean gameOver = true;
+	    	if(playerATerr == 0){
+	    		leader = Control.PlayerB;
+	    		
+	    	}
+	    	if(playerBTerr == 0){
+	    		leader = Control.PlayerA;
+	    		//GameController.StopAttacks = true;
+	    	}
+	    	
+	    	// one player has lost all his hives
+	    	// see if he has any minions left on the field
+    		for(int i = 0; i < GameController.MasterGS.readGameState().attacks.size(); i++){
+    			Attack attack = GameController.MasterGS.readGameState().attacks.get(i);
+        		if(attack.player != leader){
+        			gameOver = false; // the underdog has a minion left.  He just may capture another hive!
+        		}
+    		}
+    		if(gameOver){
+    			//nope, he had no minions.  game over
+	    		GameController.Winner = leader;
+	    		GameController.GameFinished = gameOver;
+    		}
+    	}
+    	//System.out.println(GameController.MasterGS.readGameState());
     	
     }
     
