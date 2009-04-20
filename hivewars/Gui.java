@@ -11,6 +11,12 @@ public class Gui extends Thread {
 	//constructor
 	public Gui() {
 		start();
+		try {
+			GameController.init.acquire();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void run() {
