@@ -62,7 +62,7 @@ public class GameController implements GameSettings{
 	static String arg0 = null;
 	static String arg1 = null;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException {
 		//initialize reconcile
 		//initialize everything
 		ViewableGS = new GameStateController();
@@ -101,14 +101,6 @@ public class GameController implements GameSettings{
 				Thread.sleep(200);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}; 
-		//if(Me == Control.PlayerB){
-			// Start playing. when player A will start when he receives player B's first state  
-			//GameStarted = true; 
-		//}
-		//System.out.println("getting somewhere: " + Me);
-		// Player A wait for Player B to send him a game state.  
-		//    Allows him to learn B's inet and port address
-		//while (!GameStarted);
 		
 		while(!GameFinished){
 			//call clock every 100ms
@@ -117,13 +109,9 @@ public class GameController implements GameSettings{
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {e.printStackTrace();}
-		}
-		
-		// Clean up?
-		
+		}		
 	}
 	
-	//appends new attack to PlayerAttackList
 	public static void writeCurrentAttack(Attack newAttack) throws InterruptedException{
 		if(newAttack != null){
 			double hyp;
@@ -139,13 +127,11 @@ public class GameController implements GameSettings{
 			hyp = Math.sqrt(xdist*xdist + ydist*ydist);
 			xv = ((xdist / hyp) * GameSettings.ATTACK_SPEED);
 			yv = ((ydist / hyp) * GameSettings.ATTACK_SPEED);
-			////System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
 			if(xv == 0){
 				newAttack.hitTime = (short) (newAttack.firingTime + ydist / yv);
 			} else {
 				newAttack.hitTime = (short) (newAttack.firingTime + xdist / xv);
 			}
-			////System.out.println("hitTime: " + newAttack.hitTime);
 		}
 		attackMutex.acquire();
 		CurrentAttack = newAttack;
