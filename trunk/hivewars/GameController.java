@@ -93,7 +93,7 @@ public class GameController implements GameSettings{
 			new Clock();
 			Thread.currentThread();
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {e.printStackTrace();}
 		}
 		
@@ -114,7 +114,7 @@ public class GameController implements GameSettings{
 			//calculate hitTime
 			xdist = destX - sourceX;
 			ydist = destY - sourceY;
-			hyp = Math.round(Math.sqrt(xdist*xdist + ydist*ydist));
+			hyp = Math.sqrt(xdist*xdist + ydist*ydist);
 			xv = ((xdist / hyp) * GameSettings.ATTACK_SPEED);
 			yv = ((ydist / hyp) * GameSettings.ATTACK_SPEED);
 			//System.out.println("xv: " + xv + " hyp: " + hyp + " destx: " + destX + " sourceX: " + sourceX);
