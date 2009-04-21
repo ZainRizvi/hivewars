@@ -31,6 +31,8 @@ public class GameController implements GameSettings{
 	
 	public static Semaphore attackMutex = new Semaphore(1, true);
 	
+	public static Semaphore clockMutex = new Semaphore(1, true);
+	
 
 	//port data for talking with remote player
 	public static int remotePort = 0;
