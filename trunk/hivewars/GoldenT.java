@@ -181,38 +181,38 @@ public class GoldenT extends Game {
     	BufferedImage lbb = getImage("MediumRedBall.gif", true);
     	BufferedImage lgb = getImage("MediumBlueBall.gif", true);
     	BufferedImage lsb = getImage("MediumBlackBall.gif", true);
-    	BufferedImage sob = getImage("greenBall.png", true);
+    	//BufferedImage sob = getImage("greenBall.png", true);
     	BufferedImage bb = getImage("blueBall.png", true);
     	BufferedImage rb = getImage("redBall.png", true);
     	c = new Color(255,255,255);
     	setMaskColor(c);
-    	BufferedImage be0 = getImage("BubbleExplode0.gif", true);
-    	BufferedImage be1 = getImage("BubbleExplode1.gif", true);
-     	BufferedImage be2 = getImage("BubbleExplode2.gif", true);
-     	BufferedImage be3 = getImage("BubbleExplode3.gif", true);
-    	BufferedImage be4 = getImage("BubbleExplode4.gif", true);
+    	//BufferedImage be0 = getImage("BubbleExplode0.gif", true);
+    	//BufferedImage be1 = getImage("BubbleExplode1.gif", true);
+     	//BufferedImage be2 = getImage("BubbleExplode2.gif", true);
+     	//BufferedImage be3 = getImage("BubbleExplode3.gif", true);
+    	//BufferedImage be4 = getImage("BubbleExplode4.gif", true);
     	BufferedImage fb1 = getImage("FireBall0.gif", true);
     	BufferedImage fb2 = getImage("FireBall1.gif", true);
     	BufferedImage fb3 = getImage("FireBall2.gif", true);
     	BufferedImage fb4 = getImage("FireBall3.gif", true);
     	BufferedImage[] h = {lbb, lgb, lsb};
     	attck = new BufferedImage[3];
-    	attck[0] = sob;
+    	attck[0] = bb;
     	attck[1] = bb;
     	attck[2] = rb;
     	expld = new BufferedImage[5];
-    	expld[0] = be0;
-    	expld[1] = be1;
-    	expld[2] = be2;
-    	expld[3] = be3;
-    	expld[4] = be4;
+    	//expld[0] = be0;
+    	//expld[1] = be1;
+    	//expld[2] = be2;
+    	//expld[3] = be3;
+    	//expld[4] = be4;
         fireBall = new BufferedImage[4];
         fireBall[0] = fb1;
         fireBall[1] = fb2;
         fireBall[2] = fb3;
         fireBall[3] = fb4;
-    	ColorModel cm = sob.getColorModel();
-    	int pixel = sob.getRGB(0, 0);
+    	//ColorModel cm = sob.getColorModel();
+    	//int pixel = sob.getRGB(0, 0);
     	//System.out.println(cm.getRed(pixel) + " " + cm.getGreen(pixel) + " " + cm.getBlue(pixel));
     	
     	//set up Font
@@ -671,8 +671,8 @@ public class GoldenT extends Game {
         	}
         	if(GameController.Lagging == true){
         		ann.setColor(Color.YELLOW);
-        		ann.drawString(g, "Lagging ...", 
-        				400 - ann.getWidth("Lagging ...") / 2, 500);
+        		ann.drawString(g, "Waiting for opponent ...", 
+        				400 - ann.getWidth("Waiting for opponent ...") / 2, 500);
         	}
     	} else if(mode == 7){
     		InetAddress winner;

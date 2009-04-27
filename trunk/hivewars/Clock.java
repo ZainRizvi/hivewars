@@ -19,43 +19,36 @@ public class Clock implements Runnable{
 		this.run();
 	}
     public void run() {
-    	try {
-			GameController.clockMutex.acquire();
-			int masterGameStateNum;
-			int viewableGameStateNum;
-			
-			//ensure there is only one writer for the duration of this instance of the Clock thread
-			GameController.ViewableGS.getSemaphoreForWriting();
-			NewViewable = new GameStateController();
-			
-			GameController.MasterGS.getSemaphoreForReading();
-				masterGameStateNum = GameController.MasterGS.readGameState().gameStateNum;
-			GameController.MasterGS.releaseSemaphoreForReading();
-			GameController.ViewableGS.getSemaphoreForReading();
-				viewableGameStateNum = GameController.ViewableGS.readGameState().gameStateNum;
-				NewViewable.updateGameState(GameController.ViewableGS.readGameState());
-			GameController.ViewableGS.releaseSemaphoreForReading();
-			
-	    	try {    		
-	    		// Need to lag?
-	    		//create new game state unless viewable is more than 10 states ahead of the master
-	    		if (masterGameStateNum + 10 > viewableGameStateNum) {
-	    			GameController.Lagging = false;
-	    			createNewViewableGameState();	
-	    		}
-	    		else {
-	    			GameController.Lagging = true;
-	    		}
-	    		GameController.ViewableGS.releaseSemaphoreForWritng();
-	    		transmitCurrentViewable();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		int masterGameStateNum;
+		int viewableGameStateNum;
 		
-			GameController.clockMutex.release();
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		//ensure there is only one writer for the duration of this instance of the Clock thread
+		GameController.ViewableGS.getSemaphoreForWriting();
+		NewViewable = new GameStateController();
+		
+		GameController.MasterGS.getSemaphoreForReading();
+			masterGameStateNum = GameController.MasterGS.readGameState().gameStateNum;
+		GameController.MasterGS.releaseSemaphoreForReading();
+		GameController.ViewableGS.getSemaphoreForReading();
+			viewableGameStateNum = GameController.ViewableGS.readGameState().gameStateNum;
+			NewViewable.updateGameState(GameController.ViewableGS.readGameState());
+		GameController.ViewableGS.releaseSemaphoreForReading();
+		
+    	try {    		
+    		// Need to lag?
+    		//create new game state unless viewable is more than 10 states ahead of the master
+       		if ((GameController.Lagging = false && masterGameStateNum + 10 > viewableGameStateNum) ||
+    				(GameController.Lagging = true && masterGameStateNum == viewableGameStateNum)) {
+    	    			GameController.Lagging = false;
+    			createNewViewableGameState();	
+    		}
+    		else {
+    			GameController.Lagging = true;
+    		}
+    		GameController.ViewableGS.releaseSemaphoreForWritng();
+    		transmitCurrentViewable();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
     }
     
