@@ -560,7 +560,7 @@ public class GoldenT extends Game {
 	    				click1 = 1;
 	    				destHive = selectedHive1;
 						try {
-							if((currentGS.hives.get(destHive).numMinions - 1) != 0){
+							if((currentGS.hives.get(sourceHive).numMinions - 1) != 0){
 								GameController.writeCurrentAttack(new Attack(GameController.Me, 
 										(char) sourceHive, (char) destHive, (short) currentGS.gameStateNum));
 							}
